@@ -10,14 +10,16 @@ export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    GUEST_USER: "GUEST_USER"
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
         loggedIn: false,
-        errorMessage: null
+        errorMessage: null,
+        guest_user: false
     });
     const history = useHistory();
 
@@ -32,28 +34,40 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: payload.user,
                     loggedIn: payload.loggedIn,
-                    errorMessage: null
+                    errorMessage: null,
+                    guest_user: auth.guest_user
                 });
             }
             case AuthActionType.LOGIN_USER: {
                 return setAuth({
                     user: payload.user,
                     loggedIn: payload.loggedIn,
-                    errorMessage: payload.errorMessage
+                    errorMessage: payload.errorMessage,
+                    guest_user: false
                 })
             }
             case AuthActionType.LOGOUT_USER: {
                 return setAuth({
                     user: null,
                     loggedIn: false,
-                    errorMessage: null
+                    errorMessage: null,
+                    guest_user: false
                 })
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
                     loggedIn: payload.loggedIn,
-                    errorMessage: payload.errorMessage
+                    errorMessage: payload.errorMessage,
+                    guest_user: false
+                })
+            }
+            case AuthActionType.GUEST_USER: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    errorMessage: false,
+                    guest_user: true
                 })
             }
             default:
@@ -150,6 +164,14 @@ function AuthContextProvider(props) {
         }
         console.log("user initials: " + initials);
         return initials;
+    }
+
+    auth.loginAsGuest = function () {
+        authReducer( {
+            type: AuthActionType.GUEST_USER,
+            payload: null
+        })
+        history.push("/");
     }
 
     return (

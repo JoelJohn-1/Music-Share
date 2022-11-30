@@ -189,7 +189,11 @@ body {
   align-content: right;
   background-image: linear-gradient(rgb(36, 41, 47), rgb(36, 41, 47));  background-size: cover;
 }
-
+#work-screen-search-bar {
+  position:fixed;
+  width: fill;
+  top: 40px;;
+}
 .list-card,
 .selected-list-card,
 .unselected-list-card {

@@ -27,7 +27,8 @@ const NavigationBar = () => {
   };
 
   const handleContinueAsGuest = () => {
-    setAnchorEl(null);
+    handleMenuClose();
+    auth.loginAsGuest();
   };
   const handleProfileMenuOpen = (event) => {
     console.log(anchorEl);

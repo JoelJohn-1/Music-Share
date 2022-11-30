@@ -3,8 +3,12 @@ import { GlobalStoreContext } from "../store";
 
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
-import List from "@mui/material/List";
+import PeopleIcon from '@mui/icons-material/People';
 import Box from "@mui/material/Box";
+import PersonIcon from '@mui/icons-material/Person';
+import AccountCircle from '@mui/icons-material/Home';
+import IconButton from '@mui/material/IconButton';
+
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -13,30 +17,33 @@ import Box from "@mui/material/Box";
 const WorkScreen = () => {
   
   return (
-    <div>
-      <div id="welcome-screen-box">
+    <div id="work-screen-search-bar">
+      <div>
         <Box
           sx={{
-            width: 800,
-            height: 500,
+            height: 50,
+            backgroundColor: "#ffffee",
           }}
         >
-          <div id="welcome-title"> Welcome To Playlister</div>
-          <div id="welcome-description">
-           
-          </div>
-        </Box>
-      </div>
-      <div id="welcome-screen-copyright">
-        <Box
+         
+          {<AccountCircle />}
+          {<PersonIcon />}
+          {<PeopleIcon />}
 
-          sx={{
-            height: 40,
-          }}
-        >
-          By Joel John
+          <IconButton
+                            size="large"
+                            edge="end"
+                            aria-label="account of current user"
+                            // aria-controls={menuId}
+                            aria-haspopup="true"
+                            // onClick={handleProfileMenuOpen}
+                            color="inherit"
+                        >
+                          JJ
+                        </IconButton>
         </Box>
       </div>
+      
     </div>
   );
 };
