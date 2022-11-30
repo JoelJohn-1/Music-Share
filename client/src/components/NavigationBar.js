@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalStoreContext } from "../store";
+import AuthContext from "../auth";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import IconButton from '@mui/material/IconButton';
-import { Link } from 'react-router-dom'
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import IconButton from "@mui/material/IconButton";
+import { Link } from "react-router-dom";
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -17,15 +18,27 @@ import { Link } from 'react-router-dom'
 */
 const NavigationBar = () => {
   const { store } = useContext(GlobalStoreContext);
+  const { auth } = useContext(AuthContext);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleContinueAsGuest = () => {
+    setAnchorEl(null);
+  };
   const handleProfileMenuOpen = (event) => {
-    console.log(anchorEl)
+    console.log(anchorEl);
     setAnchorEl(event.currentTarget);
-  }
+  };
+
+  const handleLogout = () => {
+    handleMenuClose();
+    auth.logoutUser();
+  };
+
   const loggedOutMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -48,42 +61,62 @@ const NavigationBar = () => {
       <MenuItem onClick={handleMenuClose}>
         <Link to="/register/">Create New Account</Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/register/">Continue As Guest</Link>
+      <MenuItem onClick={handleContinueAsGuest}>
+        <Link to="/allLists">Continue As Guest</Link>
       </MenuItem>
     </Menu>
   );
-    
+  const loggedInMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={"primary-search-account-menu"}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleLogout}>
+        <Link to="/">LogOut</Link>
+      </MenuItem>
+    </Menu>
+  );
   let menu = loggedOutMenu;
-
+  if (auth.loggedIn) {
+    menu = loggedInMenu;
+    // if (store.currentList) {
+    //   editToolbar = <EditToolbar />;
+    // }
+  }
   return (
     <div>
-      
       <div id="navigation-bar">
-        
-      <Box
-           sx={{
+        <Box
+          sx={{
             height: 40,
           }}
-        >       
-                <Box >
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-haspopup="true"
-                            color="inherit"
-                            align-content="right"
-                            onClick={handleProfileMenuOpen}
-                        >
-                            { <AccountCircle /> }
-                        </IconButton>
-                    </Box>
-        {
-          menu
-        }
+        >
+          <Box>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-haspopup="true"
+              color="inherit"
+              align-content="right"
+              onClick={handleProfileMenuOpen}
+            >
+              {<AccountCircle />}
+            </IconButton>
+          </Box>
+          {menu}
         </Box>
-
       </div>
     </div>
   );

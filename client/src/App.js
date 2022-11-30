@@ -3,12 +3,14 @@ import { React } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { AuthContextProvider } from './auth';
 import { GlobalStoreContextProvider } from './store'
+import AuthContext from './auth'
+
 import {
     WelcomeScreen,
     NavigationBar,
     LoginScreen,
     RegisterScreen,
-    HomeWrapper
+    HomeWrapper, 
 } from './components'
 /*
     This is our application's top-level component.
@@ -31,7 +33,7 @@ const App = () => {
                         <Route path="/" exact component={HomeWrapper} />
                         <Route path="/login/" exact component={LoginScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />
-                        {/* <Route path="/playlist/:id" exact component={WorkspaceScreen} /> */}
+                        {/* <Route path="/allLists/" exact component={allLists} /> */}
                     </Switch>
                     {/* <Statusbar /> */}
                 </GlobalStoreContextProvider>

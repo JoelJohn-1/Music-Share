@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
     
     @author McKilla Gorilla
 */
-const WelcomeScreen = () => {
+const WorkScreen = () => {
   
   return (
     <div>
@@ -23,15 +23,13 @@ const WelcomeScreen = () => {
         >
           <div id="welcome-title"> Welcome To Playlister</div>
           <div id="welcome-description">
-            Our site allows users to create and share personalized playlists
-            within the community. Features include a rating system, publishing,
-            and much more. Please sign in or continue as guest to get started!
+           
           </div>
         </Box>
       </div>
       <div id="welcome-screen-copyright">
         <Box
-        
+
           sx={{
             height: 40,
           }}
@@ -43,4 +41,4 @@ const WelcomeScreen = () => {
   );
 };
 
-export default WelcomeScreen;
+export default WorkScreen;

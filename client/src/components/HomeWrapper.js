@@ -6,7 +6,7 @@ import AuthContext from '../auth'
 export default function HomeWrapper() {
     const { auth } = useContext(AuthContext);
     
-    if (auth.loggedIn)
+    if (auth.loggedIn )
         return <WorkScreen />;
     else
         return <WelcomeScreen />

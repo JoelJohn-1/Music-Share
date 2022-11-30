@@ -18,6 +18,7 @@ import NavigationBar from './NavigationBar'
 import LoginScreen from './LoginScreen'
 import RegisterScreen from './RegisterScreen'
 import HomeWrapper from './HomeWrapper'
+import WorkScreen from './WorkScreen'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -43,5 +44,6 @@ export {
     NavigationBar,
     LoginScreen,
     RegisterScreen,
-    HomeWrapper
+    HomeWrapper,
+    WorkScreen
 }
