@@ -18,8 +18,7 @@ const WorkScreen = () => {
   
   return (
     <div>
-    <div id="work-screen-search-bar">
-      <div>
+      <div id="work-screen-search-bar">
         <Box
           sx={{
             height: 40,
@@ -34,12 +33,23 @@ const WorkScreen = () => {
 
           <SegmentIcon fontSize="large"  style={{ position: "absolute", right: 0 }}> </SegmentIcon>
           </div>
-         
-          
         </Box>
       </div>
-    </div>
        
+       <Box id="list-selector-space"
+          sx={{
+            backgroundColor: "#fffffe",
+          }}
+        >
+        </Box> 
+
+        <Box id="youtube-player-space"
+          sx={{
+            backgroundColor: "#fffdfe",
+          }}
+        >
+        </Box> 
+      
     </div>
   );
 };
