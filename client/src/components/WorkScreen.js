@@ -7,8 +7,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import Box from "@mui/material/Box";
 import PersonIcon from '@mui/icons-material/Person';
 import AccountCircle from '@mui/icons-material/Home';
-import IconButton from '@mui/material/IconButton';
-
+import SegmentIcon from '@mui/icons-material/Segment';
+import { TextField } from '@mui/material';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -17,33 +17,29 @@ import IconButton from '@mui/material/IconButton';
 const WorkScreen = () => {
   
   return (
+    <div>
     <div id="work-screen-search-bar">
       <div>
         <Box
           sx={{
-            height: 50,
+            height: 40,
             backgroundColor: "#ffffee",
           }}
         >
-         
-          {<AccountCircle />}
-          {<PersonIcon />}
-          {<PeopleIcon />}
+          <div>
+         <AccountCircle fontSize="large" />
+          <PersonIcon  fontSize="large"/>
+          <PeopleIcon fontSize="large" sx={{ mr: 90 }}/>
+          <TextField id="filled-basic" label="Search..." variant="filled" inputProps={{style: { height: "7px", }}} />
 
-          <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            // aria-controls={menuId}
-                            aria-haspopup="true"
-                            // onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                          JJ
-                        </IconButton>
+          <SegmentIcon fontSize="large"  style={{ position: "absolute", right: 0 }}> </SegmentIcon>
+          </div>
+         
+          
         </Box>
       </div>
-      
+    </div>
+       
     </div>
   );
 };
