@@ -49,10 +49,29 @@ const WorkScreen = () => {
        
        <Box id="list-selector-space"
           sx={{
+            overflow: 'auto',
             backgroundColor: "#fffffe",
           }}
         >
           <PlaylistCard></PlaylistCard>
+          <PlaylistCard>
+
+          </PlaylistCard>
+          <PlaylistCard>
+            
+            </PlaylistCard>
+            <PlaylistCard>
+            
+            </PlaylistCard>
+            <PlaylistCard>
+            
+            </PlaylistCard>
+            <PlaylistCard>
+            
+            </PlaylistCard>
+            <PlaylistCard>
+            
+            </PlaylistCard>
         </Box> 
 
         <Box id="youtube-player-space"

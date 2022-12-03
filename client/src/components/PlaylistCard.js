@@ -14,83 +14,69 @@ const PlaylistCard = () => {
      * Expanded/Unexpanded combod with each one
     */
     const unpublished_card = (
-            <Box 
-            sx={{ 
-                marginLeft: "10px",
-                marginTop: '10px',
-                borderRadius: '16px', 
-                width: "90%", 
-                height: 120, 
-                backgroundColor: "#383434" 
-            }} 
-            >
+        <Box sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
 
-                <Typography className="playlistcard-title" style={{marginLeft: '30px', color: 'white', fontSize: '25pt' }}>
-                    Playlist Title
-                    {/* Playlist Title Goes Here */}
-                </Typography>
+            <Typography  
+            style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'20%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
+                Playlist by
+            </Typography>
 
-                <Typography className="playlistcard-author" style={{marginLeft: '30px', color: 'white', fontSize: '12pt' }}>
-                    By Author
-                    {/* Playlist Author Goes Here */}
-                </Typography>
-                <KeyboardDoubleArrowDownIcon style={{ marginLeft: '95%'}}>
+            
+        
+            
+            
+            <Typography 
+            style={{padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',marginTop:'5%'}}>
+            By
+            </Typography>
 
-                </KeyboardDoubleArrowDownIcon>
-            </Box>
+           
+            
+
+            <KeyboardDoubleArrowDownIcon style={{ position: 'absolute', left: '94%', marginTop: '10%'}} />
+
+                
+        </Box>
     );
 
     const published_card = (
-        <Box 
-        sx={{ 
-            marginLeft: "10px",
-            marginTop: '10px',
-            borderRadius: '16px', 
-            width: "90%", 
-            height: 120, 
-            backgroundColor: "#383434",
-            color: 'white'
-        }} 
-        >
-            <Box 
-            style ={{
-                display:'flex',
-                alignItems:'center',
-                p: 1
-            }}
-            >
-                <Typography className="playlistcard-title" style={{marginLeft: '4%', color: 'white', fontSize: '25pt' }}>
-                    Playlist by
-                    {/* Playlist Title Goes Here */}
-                </Typography>
-                <ThumbUpIcon sx={{ color: 'white'}} style={{ marginLeft: '45%'}} />
-                insert likes 
-                <ThumbDownIcon sx={{ color: 'white'}} style={{ marginLeft: '5%'}}/>
-                insert dislikes
-            </Box>
-            <Typography className="playlistcard-author" style={{marginLeft: '4%', color: 'white', fontSize: '12pt' }}>
-                By Author
-                {/* Playlist Author Goes Here */}
-            </Typography>
-            <Box
-            style={{
-                marginTop: '1%',
-                display:'flex',
-                alignItems:'center',
-                
-            }}>
-                <div 
-                style={{
-                    float: 'left',
-                    marginLeft: '4%'
-                }}>
-                    Published: 
-                </div>
-                <KeyboardDoubleArrowDownIcon style={{ marginLeft: '85%'}} />
-            </Box>
-            
+        <Box sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
 
+            <Typography  
+            style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'20%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
+                Playlist by
+            </Typography>
+
+            <ThumbUpIcon style={{ position: 'absolute', left: '72%', marginTop: '2%'}} />
+            <Typography 
+            style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            Hello 
+            </Typography>
+        
+            <ThumbDownIcon style={{ position: 'absolute', left: '85%', marginTop: '2%'}}/>
+            <Typography 
+            style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            dawdwadawdwadawd
+            </Typography>
             
+            <Typography 
+            style={{padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',marginTop:'5%'}}>
+            By
+            </Typography>
+
+            <Typography 
+            style={{padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',marginTop:'9%'}}>
+            Published:
+            </Typography>
+
+            <Typography 
+            style={{padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'72%',maxHeight:'20%',maxWidth:'17%',marginTop:'9%'}}>
+            Listens:ddddddddddddddddddddddddddd
+            </Typography>
+
+            <KeyboardDoubleArrowDownIcon style={{ position: 'absolute', left: '94%', marginTop: '10%'}} />
+
+                
         </Box>
 );
 
