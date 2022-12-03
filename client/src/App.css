@@ -194,7 +194,7 @@ body {
   position: absolute; 
   top: 80px;
   width: 50%;
-  height: fill;
+  height: 80%;
   margin-left: 30px;
   margin-top: 10px;
   margin-bottom: 80px;
@@ -206,7 +206,7 @@ body {
   position: absolute; 
   top: 80px;
   width: 50%;
-  height: fill;
+  height: 80%;
   margin-right: 30px;
   margin-top: 10px;
   margin-bottom: 80px;
@@ -215,11 +215,21 @@ body {
 }
 
 #work-screen-search-bar {
-  position:fixed;
-  width: fill;
-  top: 40px;;
+  position: absolute;
+  width: 100%;
+  top: 40px;
+  
 }
-.list-card,
+
+#people-icon {
+  margin-right: 38%;
+}
+#filled-basic-text{
+  position: "absolute";
+  height: 7px;
+  
+}
+/* .list-card,
 .selected-list-card,
 .unselected-list-card {
   font-size: 18pt;
@@ -299,8 +309,8 @@ body {
   border-color: black;
   background-color: linen;
   color: black;
-}
-
+} */
+/* 
 input {
   font-size: 20pt;
 }
@@ -324,7 +334,7 @@ input {
 
 .disabled:hover {
   color: var(--swatch-neutral);
-}
+} */
 
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
 

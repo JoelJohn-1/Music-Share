@@ -8,14 +8,25 @@ import Box from "@mui/material/Box";
 import PersonIcon from '@mui/icons-material/Person';
 import AccountCircle from '@mui/icons-material/Home';
 import SegmentIcon from '@mui/icons-material/Segment';
-import { TextField } from '@mui/material';
+import { List, TextField } from '@mui/material';
+import { useHistory } from 'react-router-dom'
+import PlaylistCard from './PlaylistCard'
+
 /*
     This React component lists all the top5 lists in the UI.
     
     @author McKilla Gorilla
 */
 const WorkScreen = () => {
-  
+  const history = useHistory();
+  const handleHomeButton = () => {
+    // load in the users lists and reload the store
+    history.push("/");
+  }
+
+  const handleUniIconButton = () => {
+
+  }
   return (
     <div>
       <div id="work-screen-search-bar">
@@ -26,10 +37,10 @@ const WorkScreen = () => {
           }}
         >
           <div>
-         <AccountCircle fontSize="large" />
-          <PersonIcon  fontSize="large"/>
-          <PeopleIcon fontSize="large" sx={{ mr: 90 }}/>
-          <TextField id="filled-basic" label="Search..." variant="filled" inputProps={{style: { height: "7px", }}} />
+          <AccountCircle fontSize="large" onClick={handleHomeButton} />
+          <PersonIcon  fontSize="large" onClick={handleUniIconButton} />
+          <PeopleIcon id="people-icon" fontSize="large" />
+          <TextField id="filled-basic-text" label="Search..." variant="filled"  > </TextField>
 
           <SegmentIcon fontSize="large"  style={{ position: "absolute", right: 0 }}> </SegmentIcon>
           </div>
@@ -41,6 +52,7 @@ const WorkScreen = () => {
             backgroundColor: "#fffffe",
           }}
         >
+          <PlaylistCard></PlaylistCard>
         </Box> 
 
         <Box id="youtube-player-space"
@@ -49,7 +61,7 @@ const WorkScreen = () => {
           }}
         >
         </Box> 
-      
+          
     </div>
   );
 };

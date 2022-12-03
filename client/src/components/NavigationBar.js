@@ -30,6 +30,14 @@ const NavigationBar = () => {
     handleMenuClose();
     auth.loginAsGuest();
   };
+
+  
+  const handleCloseGuest = () => {
+    console.log("pls");
+    handleMenuClose();
+    auth.exitGuest();
+  }
+
   const handleProfileMenuOpen = (event) => {
     console.log(anchorEl);
     setAnchorEl(event.currentTarget);
@@ -56,14 +64,14 @@ const NavigationBar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={handleCloseGuest}>
         <Link to="/login/">Login</Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={handleCloseGuest}>
         <Link to="/register/">Create New Account</Link>
       </MenuItem>
       <MenuItem onClick={handleContinueAsGuest}>
-        <Link to="/allLists">Continue As Guest</Link>
+        <Link to="/">Continue As Guest</Link>
       </MenuItem>
     </Menu>
   );
@@ -88,9 +96,39 @@ const NavigationBar = () => {
       </MenuItem>
     </Menu>
   );
+
+  const guestMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={"primary-search-account-menu"}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleCloseGuest}>
+        <Link to="/login/">Login</Link>
+      </MenuItem>
+      <MenuItem onClick={handleCloseGuest}>
+        <Link to="/register/">Create New Account</Link>
+      </MenuItem>
+    </Menu>
+  );
   let menu = loggedOutMenu;
-  if (auth.loggedIn) {
-    menu = loggedInMenu;
+  if (auth.loggedIn || auth.guest_user) {
+    if (auth.loggedIn)
+      menu = loggedInMenu;
+    if (auth.guest_user)
+      menu = guestMenu;
+    else 
+      menu = loggedOutMenu;
     // if (store.currentList) {
     //   editToolbar = <EditToolbar />;
     // }
