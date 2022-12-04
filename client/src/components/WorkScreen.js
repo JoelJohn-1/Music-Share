@@ -34,12 +34,14 @@ const WorkScreen = () => {
   }
 
   const handleUniIconButton = () => {
-
+    let element = document.getElementById('testing')
+    element.style.height = '200px';
+    console.log("here");
   }
 
   const handleCreatePlaylistButton = () => {
     store.createNewList();
-    console.log(store.idNamePairs)
+    console.log(store.idNamePairs);
   }
 
   let listCard = "";
@@ -49,12 +51,14 @@ const WorkScreen = () => {
       {
       store.idNamePairs.map((pair) => (
                     <PlaylistCard
-                        key={pair._id}
+                        key={pair.id}
+                        id={pair.id}
                         likes={pair.likes}
                         dislikes={pair.dislikes}
                         published={pair.published}
                         ownerName={pair.ownerName}
                         name={pair.name}
+                        listens={pair.listens}
                     />
                 ))
       }
@@ -88,6 +92,8 @@ const WorkScreen = () => {
           }}
         >
           {listCard}
+          {/* <div id='testing' style={{height: 100, color: 'white', backgroundColor:'black'}}>adsadas</div> */}
+
         </Box> 
 
         <Box id="youtube-player-space"

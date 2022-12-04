@@ -6,7 +6,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbUp';
 import { GlobalStoreContext } from "../store";
-
+import Button from "@mui/material/Button"
 const PlaylistCard = (props) => {
 
     const { store } = useContext(GlobalStoreContext);
@@ -19,17 +19,23 @@ const PlaylistCard = (props) => {
     */
 
     let visibile = 'hidden';
-    if (props.published)
+    let new_Date = '';
+    let expanded = 'hidden';
+    if (props.published) {
+        let new_Date = props.published.substring(5, 7) + "/" + props.published.substring(8,10) + "/" + props.published.substring(0,4)
         visibile = 'visible';
-
+        
+    }
     // eslint-disable-next-line
-    let expanded = 'false';
-    let list_height = 120; 
-    const expand_list = () => {
+    const expand_list = (event) => {
+        let element = document.getElementById('list-card-' + props.id);
+        element.style.height = '550px';
+        let element2 = document.getElementById('edit-bar-' + props.id);
+        element2.style.visibility = 'visible';
+        
     }
     const unexpanded_card = (
-        <Box id={'list-card' + props._id} sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:list_height,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
-
+        <Box id={'list-card-' + props.id} sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
             <Typography  
             style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'20%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
                 {props.name}
@@ -53,18 +59,25 @@ const PlaylistCard = (props) => {
             </Typography>
 
             <Typography 
-            style={{visibility: visibile, padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',marginTop:'9%'}}>
-            Published: {props.published}
+            style={{visibility: visibile, padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',bottom:'5%'}}>
+            Published: {new_Date}
             </Typography>
 
             <Typography 
-            style={{visibility: visibile, padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'72%',maxHeight:'20%',maxWidth:'17%',marginTop:'9%'}}>
-            Listens:ddddddddddddddddddddddddddd
+            style={{visibility: visibile, padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'72%',maxHeight:'20%',maxWidth:'17%',bottom:'5%'}}>
+            Listens: {props.listens}
             </Typography>
 
-            <KeyboardDoubleArrowDownIcon onClick={expand_list} style={{ position: 'absolute', left: '94%', marginTop: '10%'}} />
+            <KeyboardDoubleArrowDownIcon onClick={expand_list} style={{ position:'absolute', left:'94%',bottom:'5%'}} />
 
-                
+            <Box id={'edit-bar-' + props.id} style={{visibility: expanded, position: 'absolute', bottom : '8%', height: 40, width: '100%', paddingLeft: '9px'}}>  
+            <Button variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Undo</Button>
+            <Button variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
+            <Button variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
+            <Button variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
+            <Button variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
+
+            </Box>
         </Box>
 );
 
