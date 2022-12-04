@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import api from './auth-request-api'
 
 const AuthContext = createContext();
-console.log("create AuthContext: " + AuthContext);
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
@@ -26,6 +25,7 @@ function AuthContextProvider(props) {
 
     useEffect(() => {
         auth.getLoggedIn();
+        // eslint-disable-next-line
     }, []);
 
     const authReducer = (action) => {

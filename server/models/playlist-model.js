@@ -10,11 +10,20 @@ const playlistSchema = new Schema(
     {
         name: { type: String, required: true },
         ownerEmail: { type: String, required: true },
+        ownerName: {type: String, required: true}, 
         songs: { type: [{
             title: String,
             artist: String,
             youTubeId: String
+        }], required: true },
+        published: {type: Date, required: true},
+        likes: {type: Number, required: true},
+        dislikes: {type: Number, required: true},
+        comments: {type: [{
+            comment_author: String,
+            comment: String
         }], required: true }
+
     },
     { timestamps: true },
 )

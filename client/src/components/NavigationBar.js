@@ -1,11 +1,9 @@
+// eslint-disable-next-line
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalStoreContext } from "../store";
 import AuthContext from "../auth";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
-import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +15,7 @@ import { Link } from "react-router-dom";
     @author McKilla Gorilla
 */
 const NavigationBar = () => {
+  // eslint-disable-next-line
   const { store } = useContext(GlobalStoreContext);
   const { auth } = useContext(AuthContext);
 
