@@ -8,9 +8,8 @@ import ThumbDownIcon from '@mui/icons-material/ThumbUp';
 import { GlobalStoreContext } from "../store";
 import Button from "@mui/material/Button"
 import List from '@mui/material/List';
-import SongCard from './SongCard'
 
-const PlaylistCard = (props) => {
+const SongCard = (props) => {
 
     const { store } = useContext(GlobalStoreContext);
 
@@ -29,45 +28,17 @@ const PlaylistCard = (props) => {
         visibile = 'visible';
         
     }
-    // let songCards = "";
-    // if (store.currentList) {
-    //     songCards = 
-    //     // <List sx={{width: '100%', bgcolor: 'background.paper', mb:"20px" }}>
-    //     // {
-    //     // store.idNamePairs.map((pair) => (
-    //     //                 <PlaylistCard
-    //     //                     key={pair.id}
-    //     //                     id={pair.id}
-    //     //                     likes={pair.likes}
-    //     //                     dislikes={pair.dislikes}
-    //     //                     published={pair.published}
-    //     //                     ownerName={pair.ownerName}
-    //     //                     name={pair.name}
-    //     //                     listens={pair.listens}
-    //     //                 />
-    //     //             ))
-    //     // }
-    //     // </List>
-    //     <div style={{border: 'solid'}}> Hi</div>
-    //  } 
+    
     // eslint-disable-next-line
     const expand_list = (event) => {
         let element = document.getElementById('list-card-' + props.id);
         element.style.height = '550px';
         let element2 = document.getElementById('edit-bar-' + props.id);
         element2.style.visibility = 'visible';
-        loadSongs();
-    }
-
-    const songs = "";
-
-    const loadSongs = () => {
-        songs = (
-            <SongCard></SongCard>
-        )    
+        
     }
     const unexpanded_card = (
-        <Box id={'list-card-' + props.id} sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
+        <Box id={'list-card-' + props.id} sx={{marginLeft: '25px', marginTop:'80px',borderRadius:'16px',width:"90%",height:90,backgroundColor:"#ffffee",color:'black',display:'flex',position:'absolute'}}>
             <Typography  
             style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'20%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
                 {props.name}
@@ -79,25 +50,12 @@ const PlaylistCard = (props) => {
             {props.likes} 
             </Typography>
         
-            <ThumbDownIcon style={{ visibility: visibile, position: 'absolute', left: '85%', marginTop: '2%'}}/>
-            <Typography 
-            style={{visibility: visibile, whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
-            {props.dislikes}
-            </Typography>
             
-            <Typography 
-            style={{padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',marginTop:'5%'}}>
-            By {props.ownerName}
-            </Typography>
-
-            <SongCard></SongCard>
             
             
 
-            <Typography 
-            style={{visibility: visibile, padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',bottom:'5%'}}>
-            Published: {new_Date}
-            </Typography>
+
+
 
             <Typography 
             style={{visibility: visibile, padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'72%',maxHeight:'20%',maxWidth:'17%',bottom:'5%'}}>
@@ -128,4 +86,4 @@ const PlaylistCard = (props) => {
     )
 }
 
-export default PlaylistCard;
+export default SongCard;

@@ -187,7 +187,7 @@ body {
   color: white;
   text-align: right;
   align-content: right;
-  background-image: linear-gradient(rgb(36, 41, 47), rgb(36, 41, 47));  background-size: cover;
+  background: linear-gradient(rgb(36, 41, 47), rgb(36, 41, 47));  background-size: cover;
 }
 
 #list-selector-space {
