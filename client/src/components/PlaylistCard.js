@@ -30,9 +30,8 @@ const PlaylistCard = (props) => {
         logged='visible'
     
     let editor = 'hidden';
-    if (published === 'visible' && logged === 'visible')
+    if (published === 'visible' && logged === 'visible' && auth.user.email === props.list.email)
         editor = 'visible'
-    console.log(published + ": " + logged + ": " + (published && logged));
 
     const expand_list = (event) => {
         event.stopPropagation();
@@ -200,7 +199,7 @@ const PlaylistCard = (props) => {
         }
     }
             
-    return (
+    return ( 
         card
     )
 }

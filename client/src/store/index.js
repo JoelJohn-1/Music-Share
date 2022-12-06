@@ -34,7 +34,8 @@ export const GlobalStoreActionType = {
     EDIT_SONG: "EDIT_SONG",
     REMOVE_SONG: "REMOVE_SONG",
     HIDE_MODALS: "HIDE_MODALS",
-    EXPAND_LIST: "EXPAND_LIST"
+    EXPAND_LIST: "EXPAND_LIST",
+    SET_SORT: "SET_SORT",
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -62,7 +63,9 @@ function GlobalStoreContextProvider(props) {
         listNameActive: false,
         listIdMarkedForDeletion: null,
         listMarkedForDeletion: null,
-        expanded_list: []
+        expanded_list: [],
+        sort_option: -1,
+        search_screen: false
     });
     const history = useHistory();
 
@@ -87,7 +90,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -102,7 +106,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 })
             }
             // CREATE A NEW LIST
@@ -117,7 +122,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -132,7 +138,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -147,7 +154,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: payload.id,
                     listMarkedForDeletion: payload.playlist,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 });
             }
             // UPDATE A LIST
@@ -162,7 +170,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 });
             }
             // START EDITING A LIST NAME
@@ -177,7 +186,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: true,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option
                 });
             }
             // 
@@ -192,7 +202,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -206,7 +217,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -220,7 +232,8 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: store.expanded_list
+                    expanded_list: store.expanded_list,
+                    sort_option: store.sort_option,
                 });
             }
             case GlobalStoreActionType.EXPAND_LIST: {
@@ -234,7 +247,23 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    expanded_list: payload.newList
+                    expanded_list: payload.newList,
+                    sort_option: store.sort_option,
+                })
+            }
+            case GlobalStoreActionType.SET_SORT: {
+                return setStore({
+                    currentModal: CurrentModal.NONE,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    expanded_list: payload.newList,
+                    sort_option: payload.sort_option,
                 })
             }
             default:
@@ -319,7 +348,6 @@ function GlobalStoreContextProvider(props) {
             }
             );
 
-            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             store.loadIdNamePairs();
         }
         else {
@@ -328,22 +356,53 @@ function GlobalStoreContextProvider(props) {
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
-    store.loadIdNamePairs = function () {
-        async function asyncLoadIdNamePairs() {
-            const response = await api.getPlaylistsInfo();
-            if (response.data.success) {
-                let pairsArray = response.data.idNamePairs;
-                storeReducer({
-                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    payload: pairsArray
-                });
+    store.loadIdNamePairs = function (newIdNamePairs) {
+            async function asyncLoadIdNamePairs() {
+                const response = await api.getPlaylistsInfo();
+                if (response.data.success) {
+                    let pairsArray = response.data.idNamePairs;
+                    if (store.sort_option === 0) {
+                        pairsArray.sort(function(a, b) { 
+                            return b.listens - a.listens;
+                        })
+                    } else if (store.sort_option === 1) {
+                        pairsArray.sort(function(a, b) { 
+                            return Date.parse(a.published) - Date.parse(b.published)
+                        })
+                    } else if (store.sort_option === 2) {
+                        pairsArray.sort(function(a, b) { 
+                            return b.likes - a.likes;
+                        })
+                    } else if (store.sort_option === 3) {
+                        pairsArray.sort(function(a, b) { 
+                            return b.dislikes - a.dislikes;
+                        })
+                    } else if (store.sort_option == 4) {
+                        pairsArray.sort(function(a, b) {                         
+                            return ('' + a.name).localeCompare(b.name);
+                        })
+                    } else if (store.sort_option === 5) {
+                        pairsArray.sort(function(a, b) {                         
+                            return Date.parse(a.createdAt) - Date.parse(b.createdAt)
+                        })
+                    } else if (store.sort_option === 6) {
+                        pairsArray.sort(function(a, b) {                         
+                            return Date.parse(a.updated) - Date.parse(b.updated)
+                        })
+                    }
+
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                        payload: pairsArray
+                    });
+                }
+                else {
+                    console.log("API FAILED TO GET THE LIST PAIRS");
+                }
             }
-            else {
-                console.log("API FAILED TO GET THE LIST PAIRS");
-            }
-        }
-        asyncLoadIdNamePairs();
-    }
+            asyncLoadIdNamePairs();
+        
+    } 
 
     store.expandList = function (id) {
         if (!store.expanded_list.includes(id)) {
@@ -357,7 +416,6 @@ function GlobalStoreContextProvider(props) {
                 newList: store.expanded_list
             }
         });
-
         store.loadIdNamePairs();
     }
     
@@ -384,7 +442,91 @@ function GlobalStoreContextProvider(props) {
         }
     }
     
+    store.sortListByListens = async function () {
+        store.sort_option = 0;
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORT,
+            payload: {
+                sort_option: 0
+            }
+        });
 
+        store.loadIdNamePairs();
+       
+    }
+
+    store.sortListByPublishDate = async function () {
+        store.sort_option = 1;
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORT,
+            payload: {
+                sort_option: 1
+            }
+        });
+
+        store.loadIdNamePairs();
+    }
+
+    store.sortListByLikes = async function () {
+        store.sort_option = 2;
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORT,
+            payload: {
+                sort_option: 2
+            }
+        });
+
+        store.loadIdNamePairs();
+    }
+    
+    store.sortListByDislikes = async function () {
+        store.sort_option = 3;
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORT,
+            payload: {
+                sort_option: 3
+            }
+        });
+
+        store.loadIdNamePairs();
+    }
+
+    store.sortListByName = async function () {
+        store.sort_option = 4;
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORT,
+            payload: {
+                sort_option: 4
+            }
+        });
+        
+        store.loadIdNamePairs();
+    }
+
+    store.sortListByCreation =async function () {
+        console.log(store.idNamePairs);
+        store.sort_option = 5;
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORT,
+            payload: {
+                sort_option: 5
+            }
+        });
+
+        store.loadIdNamePairs();
+    }
+
+    store.sortListByEdit = async function () {
+        store.sort_option = 6;
+        storeReducer({
+            type: GlobalStoreActionType.SET_SORT,
+            payload: {
+                sort_option: 6
+            }
+        })
+
+        store.loadIdNamePairs();
+    }
 
     // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION
     // OF A LIST, WHICH INCLUDES USING A VERIFICATION MODAL. THE
@@ -646,7 +788,6 @@ function GlobalStoreContextProvider(props) {
         async function asyncUpdateCurrentList() {
             const response = await api.updatePlaylistById(id, list);
             if (response.data.success) {
-                console.log(":3")
                 storeReducer({
                     type: GlobalStoreActionType.SET_CURRENT_LIST,
                     payload: store.currentList

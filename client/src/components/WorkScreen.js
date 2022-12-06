@@ -15,6 +15,8 @@ import PlaylistCard from './PlaylistCard'
 import List from '@mui/material/List';
 import MUIEditSongModal from './MUIEditSongModal'
 import MUIRemoveSongModal from "./MUIRemoveSongModal";
+import SortMenu from "./SortMenu";
+import IconButton from "@mui/material/IconButton";
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -30,8 +32,9 @@ const WorkScreen = () => {
 
 
   const history = useHistory();
-  const handleHomeButton = () => {
-    // load in the users lists and reload the store
+  const handleHomeButton = (event) => {
+    event.stopPropagation();
+    store.search_screen = false;
     history.push("/");
   }
 
@@ -43,6 +46,13 @@ const WorkScreen = () => {
     store.createNewList();
   }
   
+  const handleSortButton = () => {
+    store.sortListByName();
+  }
+  let search_screen = "visible";
+  if (store.search_screen)
+    search_screen = 'hidden';
+
   let modalJSX = "";
   if (store.isEditSongModalOpen())
     modalJSX = <MUIEditSongModal />;
@@ -68,7 +78,13 @@ const WorkScreen = () => {
                     />
                 ))
       }
+      <Box sx={{ marginLeft: '10px', marginTop:'10px',borderRadius:'16px',width:"90%",height:60,backgroundColor:"#383434",color:'white',display:'flex'}}>
+            
+
+            <AddIcon  onClick={handleCreatePlaylistButton} sx={{ position: 'absolute', right: '50%', padding: '18px'}}></AddIcon>
+        </Box>
     </List>
+    
   }
   return (
     <div>
@@ -80,13 +96,12 @@ const WorkScreen = () => {
           }}
         >
           <div>
-          <AccountCircle fontSize="large" onClick={handleHomeButton} />
-          <PersonIcon  fontSize="large" onClick={handleUniIconButton} />
-          <PeopleIcon id="people-icon" fontSize="large" />
-          <AddIcon id="create-playlist-icon" fontSize="large" onClick = {handleCreatePlaylistButton}></AddIcon>
+          <IconButton > <AccountCircle fontSize="large" onClick={handleHomeButton} style ={{color: 'black'}}/></IconButton>
+          <IconButton> <PersonIcon  fontSize="large" onClick={handleUniIconButton} style ={{color: 'black'}}/></IconButton>
+          <IconButton><PeopleIcon id="people-icon" fontSize="large" style ={{color: 'black'}}/></IconButton>
 
-          <TextField id="filled-basic-text" label="Search..." variant="filled"  > </TextField>
-          <SegmentIcon fontSize="large"  style={{ position: "absolute", right: 0 }}> </SegmentIcon>
+          <TextField id="filled-basic-text" label="Search..." variant="filled"  style={{ position: 'absolute', right: '47%'}}> </TextField>
+            <SortMenu></SortMenu>
           </div>
         </Box>
       </div>

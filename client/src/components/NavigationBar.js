@@ -32,7 +32,6 @@ const NavigationBar = () => {
 
   
   const handleCloseGuest = () => {
-    console.log("pls");
     handleMenuClose();
     auth.exitGuest();
   }
@@ -124,7 +123,7 @@ const NavigationBar = () => {
   if (auth.loggedIn || auth.guest_user) {
     if (auth.loggedIn)
       menu = loggedInMenu;
-    if (auth.guest_user)
+    else if (auth.guest_user)
       menu = guestMenu;
     else 
       menu = loggedOutMenu;
