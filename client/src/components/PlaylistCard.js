@@ -10,9 +10,12 @@ import Button from "@mui/material/Button"
 import List from '@mui/material/List';
 import SongCard from './SongCard'
 import AddIcon from '@mui/icons-material/Add';
+import AuthContext from '../auth'
+
 const PlaylistCard = (props) => {
 
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
 
     let unpublished='visible';
     let published = 'hidden';
@@ -23,6 +26,9 @@ const PlaylistCard = (props) => {
         unpublished='hidden';
     }
     
+    let logged='hidden'
+    if (auth.loggedIn)
+        logged='visible'
     // eslint-disable-next-line
     const expand_list = (event) => {
         event.stopPropagation();
@@ -32,19 +38,24 @@ const PlaylistCard = (props) => {
     const remove_song = (index) => {
         store.removeSong(props.id, index)
     }
-    const handlePublish = () => {
 
+    const handlePublish = () => {
+        store.publishList(props.id);
     }
 
     const add_song = () => {
         store.createSong(props.id);
-        
+    }
+
+    const like_list = (event) => {
+        event.stopPropagation();
+        store.likeList(props.id);
     }
 
     let songs = "";
     if (store.expanded_list) {
         songs = 
-        <List sx={{width: '100%',  mb:"20px", overflow:'auto', position:'absolute', top: '60px', height: '500px'}}>
+        <List sx={{width: '100%',  mb:"20px", overflow:'auto', position:'absolute', top: '55px', height: '470px'}}>
         {
         props.songs.map((pair, index) => (
                         <SongCard
@@ -75,15 +86,15 @@ const PlaylistCard = (props) => {
                 {props.name}
             </Typography>
 
-            <ThumbUpIcon style={{ visibility: published, position: 'absolute', left: '72%', marginTop: '2%'}} />
+            <ThumbUpIcon onClick={like_list} style={{ visibility: (published && logged), position: 'absolute', left: '72%', marginTop: '2%'}} />
             <Typography 
-            style={{visibility: published, whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.likes} 
             </Typography>
         
-            <ThumbDownIcon style={{ visibility: published, position: 'absolute', left: '85%', marginTop: '2%'}}/>
+            <ThumbDownIcon style={{ visibility: (published && logged), position: 'absolute', left: '85%', marginTop: '2%'}}/>
             <Typography 
-            style={{visibility: published, whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.dislikes}
             </Typography>
             
@@ -116,15 +127,15 @@ const PlaylistCard = (props) => {
                 {props.name}
             </Typography>
 
-            <ThumbUpIcon style={{ visibility: published, position: 'absolute', left: '72%', marginTop: '2%'}} />
+            <ThumbUpIcon onClick={like_list} style={{ visibility: (published && logged), position: 'absolute', left: '72%', marginTop: '2%'}} />
             <Typography 
-            style={{visibility: published, whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.likes} 
             </Typography>
         
-            <ThumbDownIcon style={{ visibility: published, position: 'absolute', left: '85%', marginTop: '2%'}}/>
+            <ThumbDownIcon style={{ visibility: (published && logged), position: 'absolute', left: '85%', marginTop: '2%'}}/>
             <Typography 
-            style={{visibility: published, whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.dislikes}
             </Typography>
             
@@ -150,8 +161,8 @@ const PlaylistCard = (props) => {
             <Box id={'edit-bar-' + props.id} style={{position: 'absolute', bottom : '10%', height: 40, width: '100%', paddingLeft: '9px'}}>  
             <Button variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Undo</Button>
             <Button variant="Contained" style={{ visibility: unpublished, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
-            <Button variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
-            <Button onClick={handlePublish} variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
+            <Button onClick={handlePublish} variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
+            <Button variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
             <Button variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
 
             </Box>

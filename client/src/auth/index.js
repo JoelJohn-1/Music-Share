@@ -19,13 +19,12 @@ function AuthContextProvider(props) {
         user: null,
         loggedIn: false,
         errorMessage: null,
-        guest_user: false
+        guest_user: false,
     });
     const history = useHistory();
 
     useEffect(() => {
         auth.getLoggedIn();
-        // eslint-disable-next-line
     }, []);
 
     const authReducer = (action) => {
@@ -128,6 +127,22 @@ function AuthContextProvider(props) {
         }
     }
 
+    auth.likeList = async function (id) {
+        let response = "";
+        try {
+            if (!auth.user.like_list.includes(id)) {
+                response = await api.likeList(id);
+                if (response.data.success) {
+                    auth.getLoggedIn();
+                }
+            }
+            else 
+                console.log(response.data.user)
+        } catch(error) {
+
+        }
+    }
+
     auth.loginUser = async function(email, password) {
         try{
             const response = await api.loginUser(email, password);
@@ -190,6 +205,7 @@ function AuthContextProvider(props) {
         })
     }
 
+    
     return (
         <AuthContext.Provider value={{
             auth

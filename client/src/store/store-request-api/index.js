@@ -33,7 +33,7 @@ export const createPlaylist = (newListName, newSongs, comments, userEmail, userN
         likes: 0,
         dislikes: 0,
         listens: 0,
-        comments: comments
+        comments: comments,
     })
 }
 export const deletePlaylistById = (id) => api.delete(`/playlist/${id}`)

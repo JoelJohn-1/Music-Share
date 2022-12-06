@@ -371,7 +371,11 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.expandList = function (id) {
-        store.expanded_list.push(id);
+        if (!store.expanded_list.includes(id)) {
+            store.expanded_list.push(id);
+        }else {
+            store.expanded_list.splice(store.expanded_list.indexOf(id), 1);
+        }
         storeReducer({
             type: GlobalStoreActionType.EXPAND_LIST,
             payload: {
@@ -381,21 +385,8 @@ function GlobalStoreContextProvider(props) {
 
         store.loadIdNamePairs();
     }
-    // store.loadCurrentSongs = function (id) {
-    //     async function asyncLoadSongs(id) {
-
-    //         if (id) {
-    //             const response = await api.getSongsById(id);
-    //             if (response.data.success) {
-    //                console.log(response.data);
-    //             }
-    //             else {
-    //                 console.log("API FAILED TO GET THE LIST PAIRS");
-    //             }
-    //         }
-    //     }
-    //     asyncLoadSongs(id);
-    // }
+    
+    
 
     // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION
     // OF A LIST, WHICH INCLUDES USING A VERIFICATION MODAL. THE
@@ -501,20 +492,45 @@ function GlobalStoreContextProvider(props) {
     store.createSong = function(id) {
         async function asyncCreateSong(id) {
             let response = await api.getPlaylistById(id);
-            let song = {
-                title: "Untitled",
-                artist: "?",
-                youTubeId: "dQw4w9WgXcQ"
-            }
+            let song = { title: "Untitled", artist: "?", youTubeId: "dQw4w9WgXcQ" }
             let list = response.data.playlist;
             list.songs.push(song);
             store.updateCurrentList(list, id);
         }
         asyncCreateSong(id);
-        // let list = store.currentList;      
-        // list.songs.splice(index, 0, song);
-        // // NOW MAKE IT OFFICIAL
-        // store.updateCurrentList();
+    }
+
+    store.publishList = function (id) {
+        async function asyncPublishList(id) {
+            let response = await api.getPlaylistById(id);
+            let list = response.data.playlist;
+            list.published = new Date();
+            store.updateCurrentList(list, id);
+        }
+
+        asyncPublishList(id);
+    }
+
+    store.likeList = function (id) {
+        async function asyncLikeAuth(id) {
+            // let response = await api.getPlaylistById(id);
+            // let list = response.data.playlist;
+            console.log(auth);
+            if (!auth.user.like_list.includes(id)) {
+                console.log('IT DOESNT HAS IT')
+                auth.likeList(id);
+                async function asyncLikeList(id) {
+                    let response = await api.getPlaylistById(id);
+                    let list = response.data.playlist;
+                    list.likes = list.likes + 1;
+                    store.updateCurrentList(list, id);
+                }
+                asyncLikeList(id);
+            }
+            store.loadIdNamePairs();
+        }
+
+        asyncLikeAuth(id);
     }
     // THIS FUNCTION MOVES A SONG IN THE CURRENT LIST FROM
     // start TO end AND ADJUSTS ALL OTHER ITEMS ACCORDINGLY
@@ -605,6 +621,7 @@ function GlobalStoreContextProvider(props) {
         async function asyncUpdateCurrentList() {
             const response = await api.updatePlaylistById(id, list);
             if (response.data.success) {
+                console.log(":3")
                 storeReducer({
                     type: GlobalStoreActionType.SET_CURRENT_LIST,
                     payload: store.currentList

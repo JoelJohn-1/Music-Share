@@ -20,7 +20,9 @@ getLoggedIn = async (req, res) => {
             user: {
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
-                email: loggedInUser.email
+                email: loggedInUser.email,
+                like_list: loggedInUser.likes,
+                dislike_list: loggedInUser.dislikes
             }
         })
     } catch (err) {
@@ -148,10 +150,42 @@ registerUser = async (req, res) => {
         res.status(500).send();
     }
 }
+likeList = async (req, res) => {
+    // try {
+        let userId = auth.verifyUser(req);
+        if (!userId) {
+            return res.status(200).json({
+                loggedIn: false,
+                user: null,
+                errorMessage: "?"
+            })
+        }
 
+        const loggedInUser = await User.findOne({ _id: userId });
+        console.log(loggedInUser);
+
+        if (loggedInUser) {
+            loggedInUser.likes.push(req.params.id)
+            loggedInUser
+            .save()
+            .then(() => {
+                return res.status(200).json({
+                    success: true,
+                    id: userId,
+                    message: 'User updated!',
+                })
+            })
+        }
+}
+
+dislikeList = async (req, res) => {
+
+}
 module.exports = {
     getLoggedIn,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    likeList,
+    dislikeList
 }

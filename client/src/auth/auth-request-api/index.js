@@ -37,14 +37,22 @@ export const registerUser = (firstName, lastName, email, password, passwordVerif
         lastName : lastName,
         email : email,
         password : password,
-        passwordVerify : passwordVerify
+        passwordVerify : passwordVerify,
+        likes: [],
+        dislikes: []
     })
 }
+
+export const likeList = (id) => api.put(`/like/${id}`)
+export const dislikeList = (id) => api.get(`/dislike/${id}`)
+
 const apis = {
     getLoggedIn,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    likeList,
+    dislikeList
 }
 
 export default apis
