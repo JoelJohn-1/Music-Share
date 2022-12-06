@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom'
 import PlaylistCard from './PlaylistCard'
 import List from '@mui/material/List';
 import MUIEditSongModal from './MUIEditSongModal'
-
+import MUIRemoveSongModal from "./MUIRemoveSongModal";
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -46,7 +46,8 @@ const WorkScreen = () => {
   let modalJSX = "";
   if (store.isEditSongModalOpen())
     modalJSX = <MUIEditSongModal />;
-  
+  if (store.isRemoveSongModalOpen()) 
+    modalJSX = <MUIRemoveSongModal />;
   let listCard = "";
   if (store) {
     listCard = 
@@ -63,6 +64,7 @@ const WorkScreen = () => {
                         name={pair.name}
                         listens={pair.listens}
                         songs={pair.songs}
+                        list={pair}
                     />
                 ))
       }

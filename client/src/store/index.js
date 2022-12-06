@@ -199,7 +199,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     currentModal : CurrentModal.REMOVE_SONG,
                     idNamePairs: store.idNamePairs,
-                    currentList: store.currentList,
+                    currentList: payload.currentList,
                     currentSongIndex: payload.currentSongIndex,
                     currentSong: payload.currentSong,
                     newListCounter: store.newListCounter,
@@ -361,7 +361,30 @@ function GlobalStoreContextProvider(props) {
         store.loadIdNamePairs();
     }
     
+    store.duplicateList = async function (list) {
+        let newListName = "Untitled" + store.newListCounter;
+        const response = await api.createPlaylist(newListName, [], [], auth.user.email, (auth.user.firstName + " " + auth.user.lastName));
+        if (response.status === 201) {
+            tps.clearAllTransactions();
+            let newList = response.data.playlist;
+            console.log(newList);
+            newList.name = list.name;
+            newList.songs = list.songs;
+            store.updateCurrentList(newList, newList._id);
+            storeReducer({
+                type: GlobalStoreActionType.CREATE_NEW_LIST,
+                payload: newList
+            }
+            );
+
+            store.loadIdNamePairs();
+        }
+        else {
+            console.log("API FAILED TO CREATE A NEW LIST");
+        }
+    }
     
+
 
     // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION
     // OF A LIST, WHICH INCLUDES USING A VERIFICATION MODAL. THE
@@ -397,7 +420,6 @@ function GlobalStoreContextProvider(props) {
     // TO SEE IF THEY REALLY WANT TO DELETE THE LIST
 
     store.showEditSongModal = (songIndex, songToEdit, id) => {
-
         async function loadListForEditing() {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
@@ -412,11 +434,17 @@ function GlobalStoreContextProvider(props) {
         loadListForEditing();
               
     }
-    store.showRemoveSongModal = (songIndex, songToRemove) => {
-        storeReducer({
-            type: GlobalStoreActionType.REMOVE_SONG,
-            payload: {currentSongIndex: songIndex, currentSong: songToRemove}
-        });        
+    store.showRemoveSongModal = (songIndex, songToRemove, id) => {
+        async function loadListForRemoving() {
+            let response = await api.getPlaylistById(id);
+            if (response.data.success) {
+                storeReducer({
+                    type: GlobalStoreActionType.REMOVE_SONG,
+                    payload: {currentSongIndex: songIndex, currentSong: songToRemove, currentList: response.data.playlist}
+                });      
+            }
+        }
+        loadListForRemoving();
     }
     store.hideModals = () => {
         auth.errorMessage = null;
@@ -559,15 +587,12 @@ function GlobalStoreContextProvider(props) {
     }
     // THIS FUNCTION REMOVES THE SONG AT THE index LOCATION
     // FROM THE CURRENT LIST
-    store.removeSong = function(id, index) {
-
-        async function asyncremoveSong(id, index) {
-            let response = await api.getPlaylistById(id);
-            let list = response.data.playlist;
-            list.songs.splice(index, 1);
-            store.updateCurrentList(list, id);
-        }
-        asyncremoveSong(id, index);
+    store.removeSong = function() {
+        
+        let list = store.currentList;
+        list.songs.splice(store.currentSongIndex, 1);
+        store.updateCurrentList(list, list._id);
+        
 
     }
     // THIS FUNCTION UPDATES THE TEXT IN THE ITEM AT index TO text
@@ -579,7 +604,7 @@ function GlobalStoreContextProvider(props) {
         console.log(list);
         store.updateCurrentList(list, list._id);
     }
-    
+
     store.addNewSong = () => {
         let playlistSize = store.getPlaylistSize();
         store.addCreateSongTransaction(

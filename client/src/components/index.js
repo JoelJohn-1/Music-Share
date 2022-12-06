@@ -20,6 +20,7 @@ import RegisterScreen from './RegisterScreen'
 import HomeWrapper from './HomeWrapper'
 import WorkScreen from './WorkScreen'
 import MUIEditSongModal from './MUIEditSongModal'
+import MUIRemoveSongModal from './MUIRemoveSongModal'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -47,5 +48,6 @@ export {
     RegisterScreen,
     HomeWrapper,
     WorkScreen,
-    MUIEditSongModal
+    MUIEditSongModal, 
+    MUIRemoveSongModal
 }

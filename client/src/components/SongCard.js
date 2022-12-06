@@ -15,11 +15,10 @@ const SongCard = (props) => {
 
     
     const callbackRemove = () => {
-        props.removeSong(props.songIndex);
+        props.removeSong(props.songIndex, props.song);
     }
 
     const handleEditSong = () => {
-        // console.log(props.songIndex);
        store.showEditSongModal(props.songIndex, props.song, props.ide);
     }
     

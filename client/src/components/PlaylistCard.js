@@ -19,24 +19,28 @@ const PlaylistCard = (props) => {
 
     let unpublished='visible';
     let published = 'hidden';
+    let logged='hidden'
     let new_Date = '';
     if (props.published) {
         new_Date = props.published.substring(5, 7) + "/" + props.published.substring(8,10) + "/" + props.published.substring(0,4)
         published = 'visible';
         unpublished='hidden';
     }
-    
-    let logged='hidden'
     if (auth.loggedIn)
         logged='visible'
-    // eslint-disable-next-line
+    
+    let editor = 'hidden';
+    if (published === 'visible' && logged === 'visible')
+        editor = 'visible'
+    console.log(published + ": " + logged + ": " + (published && logged));
+
     const expand_list = (event) => {
         event.stopPropagation();
         store.expandList(props.id);
     }
 
-    const remove_song = (index) => {
-        store.removeSong(props.id, index)
+    const remove_song = (index, song) => {
+        store.showRemoveSongModal(index, song, props.id);
     }
 
     const handlePublish = (event) => {
@@ -62,7 +66,11 @@ const PlaylistCard = (props) => {
     const handleDelete = (event) => {
         event.stopPropagation();
         store.deleteList(props.id);
-        
+    }
+
+    const handleDuplicate = (event) => {
+        event.stopPropagation();
+        store.duplicateList(props.list);
     }
     
     let songs = "";
@@ -101,15 +109,15 @@ const PlaylistCard = (props) => {
                 {props.name}
             </Typography>
 
-            <ThumbUpIcon onClick={like_list} style={{ visibility: (published && logged), position: 'absolute', left: '72%', marginTop: '2%'}} />
+            <ThumbUpIcon onClick={like_list} style={{ visibility: (editor), position: 'absolute', left: '72%', marginTop: '2%'}} />
             <Typography 
-            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (editor), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.likes} 
             </Typography>
         
-            <ThumbDownIcon onClick={dislike_list} style={{ visibility: (published && logged), position: 'absolute', left: '85%', marginTop: '2%'}}/>
+            <ThumbDownIcon onClick={dislike_list} style={{ visibility: (editor), position: 'absolute', left: '85%', marginTop: '2%'}}/>
             <Typography 
-            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (editor), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.dislikes}
             </Typography>
             
@@ -142,15 +150,15 @@ const PlaylistCard = (props) => {
                 {props.name}
             </Typography>
 
-            <ThumbUpIcon onClick={like_list} style={{ visibility: (published && logged), position: 'absolute', left: '72%', marginTop: '2%'}} />
+            <ThumbUpIcon onClick={like_list} style={{ visibility: (editor), position: 'absolute', left: '72%', marginTop: '2%'}} />
             <Typography 
-            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (editor), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'75%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.likes} 
             </Typography>
         
-            <ThumbDownIcon style={{ visibility: (published && logged), position: 'absolute', left: '85%', marginTop: '2%'}}/>
+            <ThumbDownIcon onClick={dislike_list} style={{ visibility: (editor), position: 'absolute', left: '85%', marginTop: '2%'}}/>
             <Typography 
-            style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
+            style={{visibility: (editor), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.dislikes}
             </Typography>
             
@@ -178,7 +186,7 @@ const PlaylistCard = (props) => {
             <Button variant="Contained" style={{ visibility: unpublished, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
             <Button onClick={handlePublish} variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
             <Button onClick={handleDelete} variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
-            <Button variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
+            <Button onClick={handleDuplicate} variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
 
             </Box>
         </Box>
