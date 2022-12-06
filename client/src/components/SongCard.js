@@ -13,25 +13,22 @@ const SongCard = (props) => {
 
     const { store } = useContext(GlobalStoreContext);
 
-    /*
-     * Published
-     * Unpublished
-     * Selected/Unselected => do it with color theme
-     * Expanded/Unexpanded combod with each one
-    */
+    
+    const callbackRemove = () => {
+        props.removeSong(props.songIndex);
+    }
 
+   
     
     
-    
-    // eslint-disable-next-line
     const unexpanded_card = (
-        <Box sx={{marginLeft: '25px', marginTop:'10px',borderRadius:'16px',width:"92%",height:60,backgroundColor:"#ffffee",color:'black',display:'flex'}}>
+        <Box id={props.id + '-' + 'songcard' + props.songIndex}sx={{marginLeft: '25px', marginTop:'10px',borderRadius:'16px',width:"92%",height:60,backgroundColor:"#ffffee",color:'black',display:'flex'}}>
             <Typography  
             style={{ color: 'black',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'40%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
                 {props.songIndex}. {props.song.title} by {props.song.artist}
             </Typography>
 
-            <CloseIcon sx={{visibility: props.published, position: 'absolute', right: '60px', padding: '18px'}}></CloseIcon>
+            <CloseIcon onClick={callbackRemove} sx={{visibility: props.published, position: 'absolute', right: '60px', padding: '18px'}}></CloseIcon>
 
 
 
@@ -42,11 +39,6 @@ const SongCard = (props) => {
         </Box>
 );
 
-    // let card = unpublished_card;
-    // if (props.card_id === 'published') {
-    //     card = published_card
-        
-    // }
         
     return (
         unexpanded_card

@@ -41,10 +41,8 @@ const WorkScreen = () => {
     store.createNewList();
     console.log(store.idNamePairs);
   }
-
-  const loadCard = () => {
-    console.log("progress")
-  }
+  
+  
   let listCard = "";
   if (store) {
     listCard = 

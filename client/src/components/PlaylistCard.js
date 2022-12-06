@@ -9,7 +9,7 @@ import { GlobalStoreContext } from "../store";
 import Button from "@mui/material/Button"
 import List from '@mui/material/List';
 import SongCard from './SongCard'
-
+import AddIcon from '@mui/icons-material/Add';
 const PlaylistCard = (props) => {
 
     const { store } = useContext(GlobalStoreContext);
@@ -25,7 +25,20 @@ const PlaylistCard = (props) => {
     
     // eslint-disable-next-line
     const expand_list = (event) => {
+        event.stopPropagation();
         store.expandList(props.id);
+    }
+
+    const remove_song = (index) => {
+        store.removeSong(props.id, index)
+    }
+    const handlePublish = () => {
+
+    }
+
+    const add_song = () => {
+        store.createSong(props.id);
+        
     }
 
     let songs = "";
@@ -35,15 +48,23 @@ const PlaylistCard = (props) => {
         {
         props.songs.map((pair, index) => (
                         <SongCard
+                        key={props.id + '' + index}
                         songIndex={index}
                         song={pair}
                         published={unpublished}
+                        id={props.id}
+                        removeSong = {remove_song}
                         />
                     ))
+            
         }
+        <Box sx={{visibility: unpublished, marginLeft: '25px', marginTop:'10px',borderRadius:'16px',width:"92%",height:60,backgroundColor:"#ffffee",color:'black',display:'flex'}}>
+            
+
+            <AddIcon  onClick={add_song} sx={{ position: 'absolute', right: '50%', padding: '18px'}}></AddIcon>
+        </Box>
         </List>
-        console.log(props.songs)
-        console.log(store.idNamePairs)
+
     }
 
    
@@ -87,6 +108,7 @@ const PlaylistCard = (props) => {
         </Box>
     );
     
+    
     const expanded_card = (
         <Box id={'list-card-' + props.id} sx={{ marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:650,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
             <Typography  
@@ -112,8 +134,6 @@ const PlaylistCard = (props) => {
             </Typography>
 
             {songs}
-            {/* <SongCard test='bruhing'></SongCard>
-            <SongCard test='bruh'></SongCard> */}
 
             <Typography 
             style={{visibility: published, padding: '1px', fontSize:'0.7vw',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'4%',maxHeight:'20%',maxWidth:'60%',bottom:'5%'}}>
@@ -131,7 +151,7 @@ const PlaylistCard = (props) => {
             <Button variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Undo</Button>
             <Button variant="Contained" style={{ visibility: unpublished, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
             <Button variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
-            <Button variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
+            <Button onClick={handlePublish} variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
             <Button variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
 
             </Box>
