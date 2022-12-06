@@ -34,9 +34,7 @@ const WorkScreen = () => {
   }
 
   const handleUniIconButton = () => {
-    let element = document.getElementById('testing')
-    element.style.height = '200px';
-    console.log("here");
+    
   }
 
   const handleCreatePlaylistButton = () => {
@@ -44,6 +42,9 @@ const WorkScreen = () => {
     console.log(store.idNamePairs);
   }
 
+  const loadCard = () => {
+    console.log("progress")
+  }
   let listCard = "";
   if (store) {
     listCard = 
@@ -59,6 +60,7 @@ const WorkScreen = () => {
                         ownerName={pair.ownerName}
                         name={pair.name}
                         listens={pair.listens}
+                        songs={pair.songs}
                     />
                 ))
       }
@@ -92,13 +94,12 @@ const WorkScreen = () => {
           }}
         >
           {listCard}
-          {/* <div id='testing' style={{height: 100, color: 'white', backgroundColor:'black'}}>adsadas</div> */}
 
         </Box> 
 
         <Box id="youtube-player-space"
           sx={{
-            backgroundColor: "#fffdfe",
+            backgroundColor: "#fffffe",
           }}
         >
         </Box> 

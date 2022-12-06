@@ -29,7 +29,7 @@ export const createPlaylist = (newListName, newSongs, comments, userEmail, userN
         songs: newSongs,
         ownerEmail: userEmail,
         ownerName: userName,
-        published: null, //new Date()
+        published: null,
         likes: 0,
         dislikes: 0,
         listens: 0,
@@ -46,12 +46,14 @@ export const updatePlaylistById = (id, playlist) => {
     })
 }
 
+export const getSongsById = (id) => api.get(`/songs/${id}`)
 const apis = {
     createPlaylist,
     deletePlaylistById,
     getPlaylistById,
     getPlaylistsInfo,
-    updatePlaylistById
+    updatePlaylistById,
+    getSongsById
 }
 
 export default apis

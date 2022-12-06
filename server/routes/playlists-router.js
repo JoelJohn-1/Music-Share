@@ -17,5 +17,5 @@ router.get('/playlists', auth.verify, PlaylistController.getPlaylists)
 router.put('/playlist/:id', auth.verify, PlaylistController.updatePlaylist)
 router.get('/playlistu/:user', auth.verify, PlaylistController.getPlaylistByUser);
 router.get('/playlistt/:title', auth.verify, PlaylistController.getPlaylistByTitle);
-
+router.get('/songs/:id', PlaylistController.getSongsById);
 module.exports = router

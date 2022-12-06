@@ -108,6 +108,18 @@ getPlaylistById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+getSongsById = async (req, res) => {
+    await Playlist.findById({ _id: req.params.id }, (err, list) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err });
+        }
+
+        return res.status(200).json({ success: true, songs: list.songs })
+                
+           
+        
+    }).catch(err => console.log(err))
+}
 getPlaylistByUser = async (req, res) => {
     if (auth.verifyUser(req) === null) {
         return res.status(400).json({
@@ -156,7 +168,8 @@ getPlaylistPairs = async (req, res) => {
                             dislikes: list.dislikes,
                             ownerName: list.ownerName,
                             published: list.published,
-                            listens: list.listens
+                            listens: list.listens,
+                            songs: list.songs
                         };
                         pairs.push(pair);
                     }
@@ -252,5 +265,6 @@ module.exports = {
     getPlaylists,
     updatePlaylist,
     getPlaylistByUser,
-    getPlaylistByTitle
+    getPlaylistByTitle,
+    getSongsById
 }
