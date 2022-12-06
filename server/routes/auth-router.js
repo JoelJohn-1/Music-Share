@@ -7,5 +7,5 @@ router.post('/login', AuthController.loginUser)
 router.get('/logout', AuthController.logoutUser)
 router.get('/loggedIn', AuthController.getLoggedIn)
 router.put(`/like/:id`, AuthController.likeList)
-router.post(`/dislike/:id`, AuthController.dislikeList)
+router.put(`/dislike/:id`, AuthController.dislikeList)
 module.exports = router

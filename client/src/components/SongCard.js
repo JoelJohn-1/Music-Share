@@ -18,11 +18,14 @@ const SongCard = (props) => {
         props.removeSong(props.songIndex);
     }
 
-   
+    const handleEditSong = () => {
+        // console.log(props.songIndex);
+       store.showEditSongModal(props.songIndex, props.song, props.ide);
+    }
     
     
     const unexpanded_card = (
-        <Box id={props.id + '-' + 'songcard' + props.songIndex}sx={{marginLeft: '25px', marginTop:'10px',borderRadius:'16px',width:"92%",height:60,backgroundColor:"#ffffee",color:'black',display:'flex'}}>
+        <Box onDoubleClick={handleEditSong} id={props.id + '-' + 'songcard' + props.songIndex}sx={{marginLeft: '25px', marginTop:'10px',borderRadius:'16px',width:"92%",height:60,backgroundColor:"#ffffee",color:'black',display:'flex'}}>
             <Typography  
             style={{ color: 'black',whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'40%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
                 {props.songIndex}. {props.song.title} by {props.song.artist}

@@ -143,6 +143,22 @@ function AuthContextProvider(props) {
         }
     }
 
+    auth.dislikeList = async function (id) {
+        let response = "";
+        try {
+            if (!auth.user.dislike_list.includes(id)) {
+                response = await api.dislikeList(id);
+                if (response.data.success) {
+                    auth.getLoggedIn();
+                }
+            }
+            else 
+                console.log(response.data.user)
+        } catch(error) {
+
+        }
+    }
+
     auth.loginUser = async function(email, password) {
         try{
             const response = await api.loginUser(email, password);

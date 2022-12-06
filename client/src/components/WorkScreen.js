@@ -13,6 +13,8 @@ import { TextField } from '@mui/material';
 import { useHistory } from 'react-router-dom'
 import PlaylistCard from './PlaylistCard'
 import List from '@mui/material/List';
+import MUIEditSongModal from './MUIEditSongModal'
+
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -39,9 +41,11 @@ const WorkScreen = () => {
 
   const handleCreatePlaylistButton = () => {
     store.createNewList();
-    console.log(store.idNamePairs);
   }
   
+  let modalJSX = "";
+  if (store.isEditSongModalOpen())
+    modalJSX = <MUIEditSongModal />;
   
   let listCard = "";
   if (store) {
@@ -101,7 +105,8 @@ const WorkScreen = () => {
           }}
         >
         </Box> 
-          
+        {modalJSX}
+
     </div>
   );
 };

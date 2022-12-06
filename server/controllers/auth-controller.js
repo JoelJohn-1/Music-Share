@@ -70,7 +70,9 @@ loginUser = async (req, res) => {
             user: {
                 firstName: existingUser.firstName,
                 lastName: existingUser.lastName,  
-                email: existingUser.email              
+                email: existingUser.email,
+                like_list: existingUser.likes,
+                dislike_list: existingUser.dislikes              
             }
         })
 
@@ -140,7 +142,9 @@ registerUser = async (req, res) => {
             user: {
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,  
-                email: savedUser.email              
+                email: savedUser.email,
+                like_list: [],
+                dislike_list: []              
             }
         })
 
@@ -151,7 +155,6 @@ registerUser = async (req, res) => {
     }
 }
 likeList = async (req, res) => {
-    // try {
         let userId = auth.verifyUser(req);
         if (!userId) {
             return res.status(200).json({
@@ -179,8 +182,32 @@ likeList = async (req, res) => {
 }
 
 dislikeList = async (req, res) => {
+    let userId = auth.verifyUser(req);
+    if (!userId) {
+        return res.status(200).json({
+            loggedIn: false,
+            user: null,
+            errorMessage: "?"
+        })
+    }
 
+    const loggedInUser = await User.findOne({ _id: userId });
+    console.log(loggedInUser);
+
+    if (loggedInUser) {
+        loggedInUser.dislikes.push(req.params.id)
+        loggedInUser
+        .save()
+        .then(() => {
+            return res.status(200).json({
+                success: true,
+                id: userId,
+                message: 'User updated!',
+            })
+        })
+    }
 }
+
 module.exports = {
     getLoggedIn,
     registerUser,

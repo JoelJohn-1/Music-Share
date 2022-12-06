@@ -39,11 +39,13 @@ const PlaylistCard = (props) => {
         store.removeSong(props.id, index)
     }
 
-    const handlePublish = () => {
+    const handlePublish = (event) => {
+        event.stopPropagation();
         store.publishList(props.id);
     }
 
-    const add_song = () => {
+    const add_song = (event) => {
+        event.stopPropagation();
         store.createSong(props.id);
     }
 
@@ -52,6 +54,17 @@ const PlaylistCard = (props) => {
         store.likeList(props.id);
     }
 
+    const dislike_list = (event) => {
+        event.stopPropagation();
+        store.dislikeList(props.id);
+    }
+    
+    const handleDelete = (event) => {
+        event.stopPropagation();
+        store.deleteList(props.id);
+        
+    }
+    
     let songs = "";
     if (store.expanded_list) {
         songs = 
@@ -59,12 +72,14 @@ const PlaylistCard = (props) => {
         {
         props.songs.map((pair, index) => (
                         <SongCard
-                        key={props.id + '' + index}
+                        key={props.id + '-' + index}
                         songIndex={index}
                         song={pair}
                         published={unpublished}
                         id={props.id}
                         removeSong = {remove_song}
+                        ide={props.id}
+                        
                         />
                     ))
             
@@ -92,7 +107,7 @@ const PlaylistCard = (props) => {
             {props.likes} 
             </Typography>
         
-            <ThumbDownIcon style={{ visibility: (published && logged), position: 'absolute', left: '85%', marginTop: '2%'}}/>
+            <ThumbDownIcon onClick={dislike_list} style={{ visibility: (published && logged), position: 'absolute', left: '85%', marginTop: '2%'}}/>
             <Typography 
             style={{visibility: (published && logged), whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',position:'absolute',left:'88%',maxHeight:'20%',maxWidth:'9%',marginTop:'2%'}}>
             {props.dislikes}
@@ -162,7 +177,7 @@ const PlaylistCard = (props) => {
             <Button variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Undo</Button>
             <Button variant="Contained" style={{ visibility: unpublished, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
             <Button onClick={handlePublish} variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
-            <Button variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
+            <Button onClick={handleDelete} variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
             <Button variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
 
             </Box>
