@@ -16,7 +16,9 @@ const PlaylistCard = (props) => {
 
     const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
-
+    let homescreen='hidden';
+    if (store.search_screen === 0)
+        homescreen = 'visible'; 
     let unpublished='visible';
     let published = 'hidden';
     let logged='hidden'
@@ -30,7 +32,7 @@ const PlaylistCard = (props) => {
         logged='visible'
     
     let editor = 'hidden';
-    if (published === 'visible' && logged === 'visible' && auth.user.email === props.list.email)
+    if (published === 'visible' && logged === 'visible' )
         editor = 'visible'
 
     const expand_list = (event) => {
@@ -72,6 +74,10 @@ const PlaylistCard = (props) => {
         store.duplicateList(props.list);
     }
     
+    const handleSetCurrentList = () => {
+        store.setCurrentList(props.id);
+        console.log(store.getCurrentList())
+    }
     let songs = "";
     if (store.expanded_list) {
         songs = 
@@ -102,7 +108,7 @@ const PlaylistCard = (props) => {
 
    
     const unexpanded_card = (
-        <Box id={'list-card-' + props.id} sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
+        <Box  onClick={handleSetCurrentList} id={'list-card-' + props.id} sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
             <Typography  
             style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'20%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
                 {props.name}
@@ -184,8 +190,8 @@ const PlaylistCard = (props) => {
             <Button variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Undo</Button>
             <Button variant="Contained" style={{ visibility: unpublished, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
             <Button onClick={handlePublish} variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
-            <Button onClick={handleDelete} variant="Contained" style={{ marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
-            <Button onClick={handleDuplicate} variant="Contained" style={{ fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
+            <Button onClick={handleDelete} variant="Contained" style={{ visibility: homescreen, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
+            <Button onClick={handleDuplicate} variant="Contained" style={{ visibility: homescreen, fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
 
             </Box>
         </Box>

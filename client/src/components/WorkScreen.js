@@ -17,6 +17,8 @@ import MUIEditSongModal from './MUIEditSongModal'
 import MUIRemoveSongModal from "./MUIRemoveSongModal";
 import SortMenu from "./SortMenu";
 import IconButton from "@mui/material/IconButton";
+import AuthContext from '../auth'
+import YouTube from 'react-youtube';
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -25,6 +27,7 @@ import IconButton from "@mui/material/IconButton";
 */
 const WorkScreen = () => {
   const { store } = useContext(GlobalStoreContext);
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
       store.loadIdNamePairs();
@@ -34,24 +37,59 @@ const WorkScreen = () => {
   const history = useHistory();
   const handleHomeButton = (event) => {
     event.stopPropagation();
-    store.search_screen = false;
+    store.setSearchScreen(0);
+    store.setSearchTerm('');
+    store.loadIdNamePairs();
     history.push("/");
   }
-
-  const handleUniIconButton = () => {
+  const handleUniIconButton = (event) => {
+    event.stopPropagation();
+    store.setSearchScreen(1)
+    store.setSearchTerm('');
+    store.loadIdNamePairs();
+    history.push("/");
+  }
+  const handleMultiIconButton = (event) => {
+    event.stopPropagation();
+    store.setSearchScreen(2);
+    store.loadIdNamePairs();
+    history.push("/");
     
   }
-
   const handleCreatePlaylistButton = () => {
     store.createNewList();
   }
-  
-  const handleSortButton = () => {
-    store.sortListByName();
+  const loadSearchTerm = (event) => {
+    store.setSearchTerm(event.target.value);
+    console.log(event);
   }
-  let search_screen = "visible";
-  if (store.search_screen)
-    search_screen = 'hidden';
+  const handleSearch = (event) => {
+    if (event.charCode == 13) {
+      store.loadIdNamePairs();
+    }
+  }
+
+  const playerOptions = {
+    height: '390',
+    width: '800',
+    playerVars: {
+        // https://developers.google.com/youtube/player_parameters
+        autoplay: 0,
+    },
+  };
+
+
+  let guest = 'visible';
+  if (auth.guest_user) {
+    guest = 'hidden';
+  }
+  let searchscreen = 'visible';
+  let homescreen = 'hidden';
+  if (store.search_screen === 0 && auth.loggedIn) {
+    homescreen = 'visible';
+    searchscreen = 'hidden';
+  }
+
 
   let modalJSX = "";
   if (store.isEditSongModalOpen())
@@ -78,10 +116,10 @@ const WorkScreen = () => {
                     />
                 ))
       }
-      <Box sx={{ marginLeft: '10px', marginTop:'10px',borderRadius:'16px',width:"90%",height:60,backgroundColor:"#383434",color:'white',display:'flex'}}>
+      <Box sx={{ visibility: homescreen, marginLeft: '10px', marginTop:'10px',borderRadius:'16px',width:"90%",height:60,backgroundColor:"#383434",color:'white',display:'flex'}}>
             
 
-            <AddIcon  onClick={handleCreatePlaylistButton} sx={{ position: 'absolute', right: '50%', padding: '18px'}}></AddIcon>
+            <AddIcon onClick={handleCreatePlaylistButton} sx={{ position: 'absolute', right: '50%', padding: '18px'}}></AddIcon>
         </Box>
     </List>
     
@@ -96,11 +134,11 @@ const WorkScreen = () => {
           }}
         >
           <div>
-          <IconButton > <AccountCircle fontSize="large" onClick={handleHomeButton} style ={{color: 'black'}}/></IconButton>
-          <IconButton> <PersonIcon  fontSize="large" onClick={handleUniIconButton} style ={{color: 'black'}}/></IconButton>
-          <IconButton><PeopleIcon id="people-icon" fontSize="large" style ={{color: 'black'}}/></IconButton>
+          <IconButton style = {{visibility: guest}} onClick={handleHomeButton} > <AccountCircle fontSize="large" style ={{ color: 'black'}}/></IconButton>
+          <IconButton onClick={handleUniIconButton} > <PersonIcon  fontSize="large"style ={{color: 'black'}}/></IconButton>
+          <IconButton onClick={handleMultiIconButton} ><PeopleIcon id="people-icon" fontSize="large" style ={{color: 'black'}}/></IconButton>
 
-          <TextField id="filled-basic-text" label="Search..." variant="filled"  style={{ position: 'absolute', right: '47%'}}> </TextField>
+          <TextField onKeyPress={handleSearch} onChange={loadSearchTerm} id="the-search-bar" label="Search..." variant="filled"  style={{ visibility: searchscreen ,position: 'absolute', right: '47%'}}> </TextField>
             <SortMenu></SortMenu>
           </div>
         </Box>
@@ -121,6 +159,10 @@ const WorkScreen = () => {
             backgroundColor: "#fffffe",
           }}
         >
+          <Box style={{position: 'absolute', marginLeft: '75px', marginTop: '60px'}}>
+            <YouTube opts={playerOptions}/>
+          </Box>
+          
         </Box> 
         {modalJSX}
 
