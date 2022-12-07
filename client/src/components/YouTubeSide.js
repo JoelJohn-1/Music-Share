@@ -1,16 +1,16 @@
 // eslint-disable-next-line
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalStoreContext } from "../store";
-import AuthContext from "../auth";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
+import StopIcon from '@mui/icons-material/Stop';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';import PlayArrowIcon from '@mui/icons-material/PlayArrow';import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import List from '@mui/material/List';
 import YouTube from 'react-youtube';
 import { Typography } from "@mui/material";
 import Comment from './Comment'
+import Stop from "@mui/icons-material/Stop";
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -20,6 +20,17 @@ const YouTubeSide = () => {
     const { store } = useContext(GlobalStoreContext);
     const [commentsVisible, setCommentsVisible] = useState(false);
     const [commentval, setCommentval] = useState("");
+    const [players, setPlayer] = useState();
+
+    function decSong() {
+      currentSong--;
+      if (currentSong < 0)
+        currentSong = list.length - 1;
+    }
+    function incSong() {
+      currentSong++;
+      currentSong = currentSong % list.length;
+    }
 
     const updateText = (event) => {
       setCommentval(event.target.value);
@@ -35,9 +46,23 @@ const YouTubeSide = () => {
       }
     }
 
+    const handleStopVideo = (event) => {
+      players.pauseVideo();
+    }
+    const handlePlayVideo = (event) => {
+      players.playVideo();
+    }
+    const handleSkipVideo = (event) => {
+      incSong();
+      loadAndPlayCurrentSong(players);
+    }
+    const handlePrevVideo = (event) => {
+      decSong();
+      loadAndPlayCurrentSong(players);
+    }
     const playerOptions = {
-        height: '390',
-        width: '800',
+        height: '420',
+        width: '850',
         playerVars: {
             // https://developers.google.com/youtube/player_parameters
             autoplay: 0,
@@ -111,10 +136,7 @@ const YouTubeSide = () => {
     player.playVideo();
   }
 
-  function incSong() {
-    currentSong++;
-    currentSong = currentSong % list.length;
-  }
+  
 
   function onPlayerReady(event) {
     loadAndPlayCurrentSong(event.target);
@@ -123,27 +145,29 @@ const YouTubeSide = () => {
 
   function onPlayerStateChange(event) {
     let playerStatus = event.data;
+    console.log(playerStatus)
     let player = event.target;
+    setPlayer(player);
     if (playerStatus === -1) {
         // VIDEO UNSTARTED
-        console.log("-1 Video unstarted");
+        // console.log("-1 Video unstarted");
     } else if (playerStatus === 0) {
         // THE VIDEO HAS COMPLETED PLAYING
-        console.log("0 Video ended");
+        // console.log("0 Video ended");
         incSong();
         loadAndPlayCurrentSong(player);
     } else if (playerStatus === 1) {
         // THE VIDEO IS PLAYED
-        console.log("1 Video played");
+        // console.log("1 Video played");
     } else if (playerStatus === 2) {
         // THE VIDEO IS PAUSED
-        console.log("2 Video paused");
+        // console.log("2 Video paused");
     } else if (playerStatus === 3) {
         // THE VIDEO IS BUFFERING
-        console.log("3 Video buffering");
+        // console.log("3 Video buffering");
     } else if (playerStatus === 5) {
         // THE VIDEO HAS BEEN CUED
-        console.log("5 Video cued");
+        // console.log("5 Video cued");
     }
   }
   
@@ -153,18 +177,27 @@ const YouTubeSide = () => {
       <Button onClick={switchPlayer} variant='contained' style={{backgroundColor: 'gray'}}>Player</Button>
       <Button onClick={switchComments} variant='contained' style={{backgroundColor: 'gray'}}>Comments</Button>
       </div>
-    <Box style={{position: 'absolute', marginLeft: '75px', marginTop: '60px'}}>
+    <Box style={{position: 'absolute', marginLeft: '50px', marginTop: '40px'}}>
             <YouTube
             style={{visibility: listExists}}
             videoId={list[currentSong]}
             opts={playerOptions}
             onReady={onPlayerReady}
             onStateChange={onPlayerStateChange}
+            
             />
-            <Typography style={{visibility: listExists}} >Playlist: {title}</Typography>
-            <Typography style={{visibility: listExists}} >Song #: {currentSong}</Typography>
-            <Typography style={{visibility: listExists}} >Title: {songTitle}</Typography>
-            <Typography style={{visibility: listExists}} >Artist: {artist}</Typography>
+            <Typography style={{position: 'absolute', left: '40%', fontSize:'30px', visibility: listExists}} > Now Playing</Typography>
+            <Typography style={{position: 'absolute',  bottom: '-18%', fontSize: '25px', visibility: listExists}} >Playlist: {title}</Typography>
+            <Typography style={{position: 'absolute',  bottom: '-24%', fontSize: '25px',visibility: listExists}} >Song #: {currentSong}</Typography>
+            <Typography style={{position: 'absolute', bottom: '-30%', fontSize: '25px',visibility: listExists}} >Title: {songTitle}</Typography>
+            <Typography style={{position: 'absolute',  bottom: '-36%', fontSize: '25px', visibility: listExists}} >Artist: {artist}</Typography>
+    
+            <Box style={{position: 'absolute', left: '35%', bottom: '-50%', visibility: listExists}}>
+              <SkipPreviousIcon onClick={handlePrevVideo} style={{fontSize: '70px'}}></SkipPreviousIcon>
+              <StopIcon onClick={handleStopVideo} style={{fontSize: '70px'}}></StopIcon>
+              <PlayArrowIcon onClick={handlePlayVideo} style={{fontSize: '70px'}}></PlayArrowIcon>
+              <SkipNextIcon onClick={handleSkipVideo} style={{fontSize: '70px'}}></SkipNextIcon>
+            </Box>
     </Box>
     {comments}
     </div>

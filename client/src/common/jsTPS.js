@@ -8,7 +8,7 @@
  * @author THE McKilla Gorilla (accept no imposters)
  * @version 1.0
  */
-export class jsTPS_Transaction {
+ export class jsTPS_Transaction {
     /**
      * This method is called by jTPS when a transaction is executed.
      */
