@@ -5,11 +5,12 @@ import AuthContext from "../auth";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import IconButton from "@mui/material/IconButton";
-import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import List from '@mui/material/List';
 import YouTube from 'react-youtube';
 import { Typography } from "@mui/material";
+import Comment from './Comment'
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -17,6 +18,22 @@ import { Typography } from "@mui/material";
 */
 const YouTubeSide = () => {
     const { store } = useContext(GlobalStoreContext);
+    const [commentsVisible, setCommentsVisible] = useState(false);
+    const [commentval, setCommentval] = useState("");
+
+    const updateText = (event) => {
+      setCommentval(event.target.value);
+    }
+
+    const submitComment = (event) => {
+      event.stopPropagation();
+      if (event.code === "Enter") {
+        console.log(commentval);
+        store.sendComment(commentval);
+        setCommentval("");
+
+      }
+    }
 
     const playerOptions = {
         height: '390',
@@ -26,6 +43,39 @@ const YouTubeSide = () => {
             autoplay: 0,
         },
       };  
+
+    let commentVisibility = (commentsVisible) ? 'visible' : 'hidden';
+    let comments = "";
+    if (store && store.currentList) {
+      comments = (
+        <div>
+          <List  sx={{maxHeight: '600px', overflowY: 'scroll', visibility: commentVisibility, position: 'static', width: '100%', bgcolor: 'background.paper', mb:"20px" }}>
+      {
+      store.currentList.comments.map((pair) => (
+                    <Comment
+                      key={'comment' + Math.random()}
+                      author={pair.comment_author}
+                      content={pair.content}
+                    />
+                ))
+      }
+      
+    </List>
+    <TextField
+    value={commentval}
+    margin="normal"
+    placeholder="Add Comment"
+    name="name"
+    inputProps={{style: {height: 30, fontSize: 30, width: '900px'}}}
+    autoFocus
+    style={{ position: 'absolute', bottom: '0px', visibility: commentVisibility, marginLeft: '10px', backgroundColor: 'white', borderRadius:'16px'}}
+    onChange={updateText}
+    onKeyPress={submitComment}
+/>
+        </div>
+      
+      )
+    }
 
     let listExists = 'hidden';
     let songTitle = "";
@@ -40,8 +90,21 @@ const YouTubeSide = () => {
         songTitle = store.currentList.songs[currentSong].title;
         artist = store.currentList.songs[currentSong].artist;
         title = store.currentList.name;
-        listExists = 'visible';
+        if (commentsVisible)
+          listExists = 'hidden';
+        else
+          listExists = 'visible';
     }
+
+
+  function switchPlayer() {
+    setCommentsVisible(false);
+  }
+
+  function switchComments() {
+    setCommentsVisible(true);
+
+  }
   function loadAndPlayCurrentSong(player) {
     let song = list[currentSong];
     player.loadVideoById(song);
@@ -85,7 +148,11 @@ const YouTubeSide = () => {
   }
   
   return (
-    
+    <div>
+      <div>
+      <Button onClick={switchPlayer} variant='contained' style={{backgroundColor: 'gray'}}>Player</Button>
+      <Button onClick={switchComments} variant='contained' style={{backgroundColor: 'gray'}}>Comments</Button>
+      </div>
     <Box style={{position: 'absolute', marginLeft: '75px', marginTop: '60px'}}>
             <YouTube
             style={{visibility: listExists}}
@@ -99,7 +166,8 @@ const YouTubeSide = () => {
             <Typography style={{visibility: listExists}} >Title: {songTitle}</Typography>
             <Typography style={{visibility: listExists}} >Artist: {artist}</Typography>
     </Box>
-
+    {comments}
+    </div>
     
   );
 };

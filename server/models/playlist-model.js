@@ -22,7 +22,7 @@ const playlistSchema = new Schema(
         listens: {type: Number, required: true},
         comments: {type: [{
             comment_author: String,
-            comment: String
+            content: String
         }], required: true }
 
     },

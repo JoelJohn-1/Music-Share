@@ -96,7 +96,7 @@ const WorkScreen = () => {
     modalJSX = <MUIEditSongModal />;
   if (store.isRemoveSongModalOpen()) 
     modalJSX = <MUIRemoveSongModal />;
-  // if (store.isDeleteSongModalOpen()) 
+  if (store.isDeleteListModalOpen()) 
     modalJSX = <MUIDeleteModal />;
   let listCard = "";
   if (store && store.idNamePairs) {
@@ -158,6 +158,7 @@ const WorkScreen = () => {
 
         <Box id="youtube-player-space"
           sx={{
+            height: '50px',
             backgroundColor: "#fffffe",
           }}
         >

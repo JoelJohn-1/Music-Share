@@ -101,15 +101,6 @@ const PlaylistCard = (props) => {
 
     }
 
-    const testing = (event) => {
-        console.log(event.target.id)
-        document.getElementById(event.target.id).remove();
-        let child = document.getElementById('text-list-' + props.id);
-        console.log(child);
-        
-    }
-
-
     
     const updateText = (event) => {
         setEditName(event.target.value);
