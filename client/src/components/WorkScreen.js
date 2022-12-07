@@ -61,7 +61,6 @@ const WorkScreen = () => {
   }
   const loadSearchTerm = (event) => {
     store.setSearchTerm(event.target.value);
-    console.log(event);
   }
   const handleSearch = (event) => {
     if (event.charCode == 13) {
@@ -69,14 +68,7 @@ const WorkScreen = () => {
     }
   }
 
-  const playerOptions = {
-    height: '390',
-    width: '800',
-    playerVars: {
-        // https://developers.google.com/youtube/player_parameters
-        autoplay: 0,
-    },
-  };
+
 
 
   let guest = 'visible';
@@ -159,9 +151,9 @@ const WorkScreen = () => {
             backgroundColor: "#fffffe",
           }}
         >
-          <Box style={{position: 'absolute', marginLeft: '75px', marginTop: '60px'}}>
+          {/* <Box style={{position: 'absolute', marginLeft: '75px', marginTop: '60px'}}>
             <YouTube opts={playerOptions}/>
-          </Box>
+          </Box> */}
           
         </Box> 
         {modalJSX}

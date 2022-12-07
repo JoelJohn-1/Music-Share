@@ -84,7 +84,7 @@ function GlobalStoreContextProvider(props) {
             // LIST UPDATE OF ITS NAME
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: payload.idNamePairs,
                     currentList: payload.playlist,
                     currentSongIndex: -1,
@@ -102,7 +102,7 @@ function GlobalStoreContextProvider(props) {
             // STOP EDITING THE CURRENT LIST
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     currentSongIndex: -1,
@@ -120,7 +120,7 @@ function GlobalStoreContextProvider(props) {
             // CREATE A NEW LIST
             case GlobalStoreActionType.CREATE_NEW_LIST: {                
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
                     currentSongIndex: -1,
@@ -138,7 +138,7 @@ function GlobalStoreContextProvider(props) {
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
             case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: payload,
                     currentList: store.currentList,
                     currentSongIndex: -1,
@@ -174,7 +174,7 @@ function GlobalStoreContextProvider(props) {
             // UPDATE A LIST
             case GlobalStoreActionType.SET_CURRENT_LIST: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     currentSongIndex: -1,
@@ -192,7 +192,7 @@ function GlobalStoreContextProvider(props) {
             // START EDITING A LIST NAME
             case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     currentSongIndex: -1,
@@ -261,7 +261,7 @@ function GlobalStoreContextProvider(props) {
             }
             case GlobalStoreActionType.EXPAND_LIST: {
                 return setStore({
-                    currentModal : CurrentModal.NONE,
+                    currentModal : store.currentModal,
                     idNamePairs: store.idNamePairs,
                     currentList: store.currentList,
                     currentSongIndex: -1,
@@ -742,6 +742,7 @@ function GlobalStoreContextProvider(props) {
     // FUNCTIONS ARE setCurrentList, addMoveItemTransaction, addUpdateItemTransaction,
     // moveItem, updateItem, updateCurrentList, undo, and redo
     store.setCurrentList = function (id) {
+        if (id) {
         async function asyncSetCurrentList(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
@@ -757,6 +758,7 @@ function GlobalStoreContextProvider(props) {
             }
         }
         asyncSetCurrentList(id);
+    }
     }
 
     store.getCurrentList = function () {
