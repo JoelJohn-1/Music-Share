@@ -15,6 +15,7 @@ import PlaylistCard from './PlaylistCard'
 import List from '@mui/material/List';
 import MUIEditSongModal from './MUIEditSongModal'
 import MUIRemoveSongModal from "./MUIRemoveSongModal";
+import MUIDeleteModal from "./MUIDeleteModal";
 import SortMenu from "./SortMenu";
 import IconButton from "@mui/material/IconButton";
 import AuthContext from '../auth'
@@ -36,25 +37,30 @@ const WorkScreen = () => {
 
   const history = useHistory();
   const handleHomeButton = (event) => {
-    event.stopPropagation();
     store.setSearchScreen(0);
     store.setSearchTerm('');
     store.loadIdNamePairs();
-    history.push("/");
+    event.stopPropagation();
+    store.closeCurrentList();
+
+
   }
   const handleUniIconButton = (event) => {
     event.stopPropagation();
     store.setSearchScreen(1)
     store.setSearchTerm('');
     store.loadIdNamePairs();
-    history.push("/");
+    store.closeCurrentList();
+
+
   }
   const handleMultiIconButton = (event) => {
-    event.stopPropagation();
     store.setSearchScreen(2);
     store.loadIdNamePairs();
-    history.push("/");
-    
+    event.stopPropagation();
+    store.closeCurrentList();
+
+
   }
   const handleCreatePlaylistButton = () => {
     store.createNewList();
@@ -66,6 +72,8 @@ const WorkScreen = () => {
     if (event.charCode == 13) {
       store.loadIdNamePairs();
     }
+    event.stopPropagation();
+
   }
 
 
@@ -88,8 +96,10 @@ const WorkScreen = () => {
     modalJSX = <MUIEditSongModal />;
   if (store.isRemoveSongModalOpen()) 
     modalJSX = <MUIRemoveSongModal />;
+  // if (store.isDeleteSongModalOpen()) 
+    modalJSX = <MUIDeleteModal />;
   let listCard = "";
-  if (store) {
+  if (store && store.idNamePairs) {
     listCard = 
     <List sx={{width: '100%', bgcolor: 'background.paper', mb:"20px" }}>
       {

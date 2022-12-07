@@ -14,12 +14,18 @@ const SongCard = (props) => {
     const { store } = useContext(GlobalStoreContext);
 
     
-    const callbackRemove = () => {
-        props.removeSong(props.songIndex, props.song);
+    const callbackRemove = (event) => {
+        event.stopPropagation();
+
+        props.removeSong(event, props.songIndex, props.song);
+
     }
 
-    const handleEditSong = () => {
+    const handleEditSong = (event) => {
+        event.stopPropagation();
+        console.log(event.target);
        store.showEditSongModal(props.songIndex, props.song, props.ide);
+
     }
     
     
