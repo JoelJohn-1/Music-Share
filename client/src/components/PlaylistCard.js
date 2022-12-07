@@ -57,7 +57,8 @@ const PlaylistCard = (props) => {
     }
 
     const add_song = (event) => {
-        store.createSong(props.id);
+        // store.createSong(props.id);
+        store.addNewSong(props.list);
         event.stopPropagation();
     }
 

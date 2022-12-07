@@ -800,7 +800,8 @@ function GlobalStoreContextProvider(props) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
                 let playlist = response.data.playlist;
-
+                if (playlist.published)
+                    playlist.listens = playlist.listens + 1;
                 response = await api.updatePlaylistById(playlist._id, playlist);
                 if (response.data.success) {
                     storeReducer({
@@ -820,24 +821,19 @@ function GlobalStoreContextProvider(props) {
     store.getPlaylistSize = function() {
         return store.currentList.songs.length;
     }
-    store.addNewSong = function() {
-        let index = this.getPlaylistSize();
-        this.addCreateSongTransaction(index, "Untitled", "?", "dQw4w9WgXcQ");
-    }
+    
     // THIS FUNCTION CREATES A NEW SONG IN THE CURRENT LIST
     // USING THE PROVIDED DATA AND PUTS THIS SONG AT INDEX
-    store.createSong = function(id) {
-        async function asyncCreateSong(id) {
+    store.createSong = function(id, index, song) {
+        async function asyncCreateSong(id, index, song) {
             let response = await api.getPlaylistById(id);
-            let song = { title: "Untitled", artist: "?", youTubeId: "dQw4w9WgXcQ" }
-            
             let list = response.data.playlist;
-            list.songs.push(song);
+            list.songs.splice(index, 0, song);
             
 
             store.updateCurrentList(list, id);
         }
-        asyncCreateSong(id);
+        asyncCreateSong(id, index, song);
     }
 
     store.publishList = function (id) {
@@ -945,21 +941,21 @@ function GlobalStoreContextProvider(props) {
         song.youTubeId = songData.youTubeId;
         store.updateCurrentList(list, list._id);
     }
-
-    store.addNewSong = () => {
-        let playlistSize = store.getPlaylistSize();
-        store.addCreateSongTransaction(
-            playlistSize, "Untitled", "?", "dQw4w9WgXcQ");
+    
+    store.addNewSong = function(list) {
+        let index = list.songs.length;
+        let id = list.id;
+        this.addCreateSongTransaction(index, "Untitled", "?", "dQw4w9WgXcQ", id);
     }
     // THIS FUNCDTION ADDS A CreateSong_Transaction TO THE TRANSACTION STACK
-    store.addCreateSongTransaction = (index, title, artist, youTubeId) => {
+    store.addCreateSongTransaction = (index, title, artist, youTubeId, id) => {
         // ADD A SONG ITEM AND ITS NUMBER
         let song = {
             title: title,
             artist: artist,
             youTubeId: youTubeId
         };
-        let transaction = new CreateSong_Transaction(store, index, song);
+        let transaction = new CreateSong_Transaction(store, index, song, id);
         tps.addTransaction(transaction);
     }    
     store.addMoveSongTransaction = function (start, end) {
