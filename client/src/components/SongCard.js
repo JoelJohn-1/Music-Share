@@ -20,8 +20,10 @@ const SongCard = (props) => {
     }
 
     const handleEditSong = (event) => {
+        if (!props.ispublished) {
+            store.showEditSongModal(props.songIndex, props.song, props.ide);
+        }
         event.stopPropagation();
-       store.showEditSongModal(props.songIndex, props.song, props.ide);
 
     }
     

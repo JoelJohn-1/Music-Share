@@ -10,11 +10,12 @@ import jsTPS_Transaction from "../common/jsTPS.js"
  * @author ?
  */
 export default class RemoveSong_Transaction extends jsTPS_Transaction {
-    constructor(initStore, initIndex, initSong) {
+    constructor(initStore, initIndex, initSong, id) {
         super();
         this.store = initStore;
         this.index = initIndex;
         this.song = initSong;
+        this.id = id;
     }
 
     doTransaction() {
@@ -22,6 +23,6 @@ export default class RemoveSong_Transaction extends jsTPS_Transaction {
     }
     
     undoTransaction() {
-        this.store.createSong(this.index, this.song);
+        this.store.createSong(this.id, this.index, this.song);
     }
 }

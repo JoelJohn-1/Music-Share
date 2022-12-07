@@ -24,10 +24,8 @@ const style1 = {
 export default function MUIRemoveSongModal() {
     const { store } = useContext(GlobalStoreContext);
 
-    function handleConfirmRemoveSong () {
-        // store.addRemoveSongTransaction();
-    store.removeSong();
-
+    function handleConfirmRemoveSong (event) {
+        store.addRemoveSongTransaction();
     }
 
     function handleCancelRemoveSong () {

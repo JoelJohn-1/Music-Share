@@ -924,18 +924,16 @@ function GlobalStoreContextProvider(props) {
     }
     // THIS FUNCTION REMOVES THE SONG AT THE index LOCATION
     // FROM THE CURRENT LIST
-    store.removeSong = function() {
-        
+    store.removeSong = function(index) {
         let list = store.currentList;
-        list.songs.splice(store.currentSongIndex, 1);
+        list.songs.splice(index, 1);
         store.updateCurrentList(list, list._id);
-        
-
+    
     }
     // THIS FUNCTION UPDATES THE TEXT IN THE ITEM AT index TO text
     store.updateSong = function(index, songData, list) {
         
-        let song = list.songs[store.currentSongIndex];
+        let song = list.songs[index];
         song.title = songData.title;
         song.artist = songData.artist;
         song.youTubeId = songData.youTubeId;
@@ -957,6 +955,7 @@ function GlobalStoreContextProvider(props) {
         };
         let transaction = new CreateSong_Transaction(store, index, song, id);
         tps.addTransaction(transaction);
+        console.log(tps)
     }    
     store.addMoveSongTransaction = function (start, end) {
         let transaction = new MoveSong_Transaction(store, start, end);
@@ -966,17 +965,17 @@ function GlobalStoreContextProvider(props) {
     store.addRemoveSongTransaction = () => {
         let index = store.currentSongIndex;
         let song = store.currentList.songs[index];
-        let transaction = new RemoveSong_Transaction(store, index, song);
+        let transaction = new RemoveSong_Transaction(store, index, song, store.currentList._id);
         tps.addTransaction(transaction);
     }
-    store.addUpdateSongTransaction = function (index, newSongData) {
-        let song = store.currentList.songs[index];
+    store.addUpdateSongTransaction = function (newSongData, list) {
+        let song = store.currentList.songs[store.currentSongIndex];
         let oldSongData = {
             title: song.title,
             artist: song.artist,
             youTubeId: song.youTubeId
         };
-        let transaction = new UpdateSong_Transaction(this, index, oldSongData, newSongData);        
+        let transaction = new UpdateSong_Transaction(this, store.currentSongIndex, oldSongData, newSongData, list);        
         tps.addTransaction(transaction);
     }
     store.updateCurrentList = function(list, id) {

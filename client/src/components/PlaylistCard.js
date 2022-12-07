@@ -40,6 +40,8 @@ const PlaylistCard = (props) => {
     
     const expand_list = (event) => {
         store.expandList(props.id);
+        store.setCurrentList(props.id);
+
         event.stopPropagation();
 
     }
@@ -75,6 +77,18 @@ const PlaylistCard = (props) => {
     }
         event.stopPropagation();
 
+    }
+
+    const handleUndo = (event) => {
+        event.stopPropagation();
+        console.log("HELLO");
+        store.undo();
+        
+    }
+
+    const handleRedo = (event) => {
+        event.stopPropagation();
+        store.redo();
     }
     
     const handleDelete = (event) => {
@@ -141,7 +155,7 @@ const PlaylistCard = (props) => {
                         id={props.id}
                         removeSong = {remove_song}
                         ide={props.id}
-                        
+                        ispublished={props.published}
                         />
                     ))
             
@@ -248,8 +262,8 @@ const PlaylistCard = (props) => {
             <KeyboardDoubleArrowDownIcon onClick={expand_list} style={{ position:'absolute', left:'94%',bottom:'5%'}} />
 
             <Box id={'edit-bar-' + props.id} style={{position: 'absolute', bottom : '10%', height: 40, width: '100%', paddingLeft: '9px'}}>  
-            <Button variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Undo</Button>
-            <Button variant="Contained" style={{ visibility: unpublished, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
+            <Button onClick={handleUndo} variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Undo</Button>
+            <Button onClick={handleRedo} variant="Contained" style={{ visibility: unpublished, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
             <Button onClick={handlePublish} variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
             <Button onClick={handleDelete} variant="Contained" style={{ visibility: homescreen, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
             <Button onClick={handleDuplicate} variant="Contained" style={{ visibility: homescreen, fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
