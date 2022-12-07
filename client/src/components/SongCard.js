@@ -19,8 +19,7 @@ const SongCard = (props) => {
     }
 
     const handleEditSong = () => {
-        if (store.search_screen === 0)
-            store.showEditSongModal(props.songIndex, props.song, props.ide);
+       store.showEditSongModal(props.songIndex, props.song, props.ide);
     }
     
     

@@ -18,7 +18,7 @@ import MUIRemoveSongModal from "./MUIRemoveSongModal";
 import SortMenu from "./SortMenu";
 import IconButton from "@mui/material/IconButton";
 import AuthContext from '../auth'
-import YouTube from 'react-youtube';
+import YouTubeSide from './YouTubeSide';
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -151,9 +151,7 @@ const WorkScreen = () => {
             backgroundColor: "#fffffe",
           }}
         >
-          {/* <Box style={{position: 'absolute', marginLeft: '75px', marginTop: '60px'}}>
-            <YouTube opts={playerOptions}/>
-          </Box> */}
+          <YouTubeSide></YouTubeSide>
           
         </Box> 
         {modalJSX}

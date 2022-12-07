@@ -137,10 +137,15 @@ const SortMenu = () => {
 
   
   let menu = home_search;
-  if (store.search_screen) {
-      menu = any_search;
+  if (auth.loggedIn || auth.guest_user) {
+    if (auth.loggedIn)
+      menu = home_search;
+    else 
+      menu = home_search;
+    // if (store.currentList) {
+    //   editToolbar = <EditToolbar />;
+    // }
   }
-  
   return (
     <div>
     <div id="search-menus">

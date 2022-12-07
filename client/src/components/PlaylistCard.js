@@ -37,6 +37,8 @@ const PlaylistCard = (props) => {
 
     const expand_list = (event) => {
         event.stopPropagation();
+        store.setCurrentList(props.id);
+
         store.expandList(props.id);
     }
 
@@ -76,7 +78,6 @@ const PlaylistCard = (props) => {
     
     const handleSetCurrentList = () => {
         store.setCurrentList(props.id);
-        console.log(store.getCurrentList())
     }
     let songs = "";
     if (store.expanded_list) {
@@ -108,7 +109,7 @@ const PlaylistCard = (props) => {
 
    
     const unexpanded_card = (
-        <Box  onClick={handleSetCurrentList} id={'list-card-' + props.id} sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
+        <Box  id={'list-card-' + props.id} sx={{marginLeft:"10px",marginTop:'10px',borderRadius:'16px',width:"90%",height:120,backgroundColor:"#383434",color:'white',display:'flex',position:'relative'}}>
             <Typography  
             style={{whiteSpace:'nowrap',display:'block',textOverflow:'ellipsis',overflow:'hidden',maxWidth:'60%',maxHeight:'20%',fontSize:'1vw',marginLeft:'4%',marginTop:'2%'}}>
                 {props.name}
