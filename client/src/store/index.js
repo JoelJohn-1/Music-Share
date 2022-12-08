@@ -442,6 +442,9 @@ function GlobalStoreContextProvider(props) {
     store.loadIdNamePairs = function (search_term) {
         if (search_term)
             store.search_term = search_term
+        if (!search_term) {
+            search_term = store.search_term;
+        }
         if (store.search_screen === 0 && auth.loggedIn) {
             async function asyncLoadIdNamePairs() {
                 const response = await api.getPlaylistsInfo();
@@ -472,7 +475,7 @@ function GlobalStoreContextProvider(props) {
             }
             asyncLoadIdNamePairs();
         } else if (store.search_screen === 1 || (store.search_screen !== 2 && auth.guest_user)) {
-            if (store.search_term === "" || !store.search_term) {
+            if (search_term === "" || !search_term) {
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload: []
@@ -480,7 +483,7 @@ function GlobalStoreContextProvider(props) {
                 
             } else {
                 async function asyncLoadIdNamePairs() {
-                    const response = await api.getPlaylistByTitle(store.search_term);
+                    const response = await api.getPlaylistByTitle(search_term);
                     if (response.data.success) {
                         let pairsArray = response.data.idNamePairs;
                         if (store.sort_option === 0) {
@@ -513,7 +516,7 @@ function GlobalStoreContextProvider(props) {
                 asyncLoadIdNamePairs();
             }
         } else if (store.search_screen === 2) {
-            if (store.search_term === "" || !store.search_term) {
+            if (search_term === "" || !search_term) {
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload: []
@@ -521,7 +524,7 @@ function GlobalStoreContextProvider(props) {
                 
             } else {
                 async function asyncLoadIdNamePairs() {
-                    const response = await api.getPlaylistByUser(store.search_term);
+                    const response = await api.getPlaylistByUser(search_term);
                     if (response.data.success) {
                         let pairsArray = response.data.idNamePairs;
                         if (store.sort_option === 0) {
@@ -827,6 +830,7 @@ function GlobalStoreContextProvider(props) {
                         payload: playlist
                     });
                 }
+
             }
         }
         asyncSetCurrentList(id);
@@ -942,9 +946,9 @@ function GlobalStoreContextProvider(props) {
     }
     // THIS FUNCTION REMOVES THE SONG AT THE index LOCATION
     // FROM THE CURRENT LIST
-    store.removeSong = function(index) {
-        let list = store.currentList;
+    store.removeSong = function(index, list) {
         list.songs.splice(index, 1);
+
         store.updateCurrentList(list, list._id);
     
     }
@@ -971,7 +975,7 @@ function GlobalStoreContextProvider(props) {
             artist: artist,
             youTubeId: youTubeId
         };
-        let transaction = new CreateSong_Transaction(store, index, song, id);
+        let transaction = new CreateSong_Transaction(store, index, song, id, store.currentList);
         tps.addTransaction(transaction);
     }    
     store.addMoveSongTransaction = function (start, end) {
@@ -982,7 +986,7 @@ function GlobalStoreContextProvider(props) {
     store.addRemoveSongTransaction = () => {
         let index = store.currentSongIndex;
         let song = store.currentList.songs[index];
-        let transaction = new RemoveSong_Transaction(store, index, song, store.currentList._id);
+        let transaction = new RemoveSong_Transaction(store, index, song, store.currentList._id, store.currentList);
         tps.addTransaction(transaction);
     }
     store.addUpdateSongTransaction = function (newSongData, list) {

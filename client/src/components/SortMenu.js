@@ -26,17 +26,7 @@ const SortMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleContinueAsGuest = () => {
-    handleMenuClose();
-    auth.loginAsGuest();
-  };
-
   
-  const handleCloseGuest = () => {
-    handleMenuClose();
-    auth.exitGuest();
-  }
-
   const handleProfileMenuOpen = (event) => {
     console.log(anchorEl);
     setAnchorEl(event.currentTarget);
@@ -44,30 +34,44 @@ const SortMenu = () => {
 
   
   const handleSortByName = (event) => {
+    setAnchorEl(null);
+
     store.sortListByName();
   }
 
   const handleSortByDate = (event) => {
+    setAnchorEl(null);
+
     store.sortListByPublishDate();
   }
 
   const handleSortByLikes = (event) => {
+    setAnchorEl(null);
+
     store.sortListByLikes();
   }
 
   const handleSortByDislikes = (event) => {
+    setAnchorEl(null);
+
     store.sortListByDislikes();
   }
 
   const handleSortByCreation = (event) => {
+    setAnchorEl(null);
+
     store.sortListByCreation();
   }
 
   const handleSortByEdit = (event) => {
+    setAnchorEl(null);
+
     store.sortListByEdit();
   }
 
   const handleSortByListens = (event) => {
+    setAnchorEl(null);
+
     store.sortListByListens();
   }
 

@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
-
+import logo from './Playlister.png';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -145,6 +145,7 @@ const NavigationBar = () => {
           }}
         >
           <Box>
+            <img src={logo} alt="Logo"style={{position: 'absolute', width: '100px', left: '0px'}}></img>
             <IconButton
               size="large"
               edge="end"
