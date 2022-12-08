@@ -18,8 +18,8 @@ const WelcomeScreen = () => {
             height: 500,
           }}
         >
-          <div id="welcome-title"> Welcome To Playlister</div>
-          <div id="welcome-description">
+          <div style={{fontSize: '40px'}}> Welcome To Playlister</div>
+          <div style={{fontSize: '30px'}}>
             Our site allows users to create and share personalized playlists
             within the community. Features include a rating system, publishing,
             and much more. Please sign in or continue as guest to get started!
