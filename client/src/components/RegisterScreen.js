@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import AuthContext from '../auth'
-// import MUIErrorModal from './MUIErrorModal'
+import MUIErrorModal from './MUIErrorModal'
 // import Copyright from './Copyright'
 
 import Avatar from '@mui/material/Avatar';
@@ -32,7 +32,7 @@ export default function RegisterScreen() {
     let modalJSX = ""
     console.log(auth);
     if (auth.errorMessage !== null){
-        // modalJSX = <MUIErrorModal />;
+        modalJSX = <MUIErrorModal />;
     }
     console.log(modalJSX);
 
@@ -127,7 +127,7 @@ export default function RegisterScreen() {
                     </Box>
                 </Box>
                 {/* <Copyright sx={{ mt: 5 }} /> */}
-                {/* { modalJSX } */}
+                { modalJSX }
             </Container>
     );
 }

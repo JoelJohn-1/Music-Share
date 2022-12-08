@@ -66,7 +66,7 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: null,
                     loggedIn: false,
-                    errorMessage: false,
+                    errorMessage: null,
                     guest_user: true
                 })
             }
@@ -74,7 +74,7 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user:null,
                     loggenIn: false,
-                    errorMessage: false,
+                    errorMessage: null,
                     guest_user: false
                 })
             }
@@ -111,9 +111,6 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/login");
-                console.log("NOW WE LOGIN");
-                auth.loginUser(email, password);
-                console.log("LOGGED IN");
             }
         } catch(error){
             authReducer({

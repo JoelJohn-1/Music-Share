@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import AuthContext from '../auth'
-// import MUIErrorModal from './MUIErrorModal'
+import MUIErrorModal from './MUIErrorModal'
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -31,7 +31,7 @@ export default function LoginScreen() {
     let modalJSX = "";
     console.log(auth);
     if (auth.errorMessage !== null){
-        // modalJSX = <MUIErrorModal />;
+        modalJSX = <MUIErrorModal />;
     }
     // console.log(modalJSX);
 

@@ -573,6 +573,21 @@ function GlobalStoreContextProvider(props) {
     }
     
     store.duplicateList = async function (list) {
+        const response1 = await api.getPlaylistsInfo();
+        const listArray = [];
+        if (response1.data.success) {
+            for (let i = 0; i < response1.data.idNamePairs.length; i++) {
+                console.log(response1.data.idNamePairs[i].name)
+                    listArray.push(response1.data.idNamePairs[i].name);
+            }
+        }
+        let numToAdd = 0;
+        let newName = list.name;
+        while (listArray.includes(newName)) {
+            newName = list.name + numToAdd;
+            numToAdd++;
+        }
+        list.name = newName;
         let newListName = "Untitled" + store.newListCounter;
         const response = await api.createPlaylist(newListName, [], [], auth.user.email, (auth.user.firstName + " " + auth.user.lastName));
         if (response.status === 201) {
@@ -580,6 +595,7 @@ function GlobalStoreContextProvider(props) {
             let newList = response.data.playlist;
             newList.name = list.name;
             newList.songs = list.songs;
+            console.log(newList);
             store.updateCurrentList(newList, newList._id);
             storeReducer({
                 type: GlobalStoreActionType.CREATE_NEW_LIST,
@@ -920,7 +936,7 @@ function GlobalStoreContextProvider(props) {
         }
 
         // NOW MAKE IT OFFICIAL
-        store.updateCurrentList();
+        store.updateCurrentList(store.currentList, store.currentList._id);
     }
     // THIS FUNCTION REMOVES THE SONG AT THE index LOCATION
     // FROM THE CURRENT LIST
@@ -1020,6 +1036,8 @@ function GlobalStoreContextProvider(props) {
     }
 
     function KeyPress(event) {
+        
+
         if (!store.modalOpen && event.ctrlKey){
             if(event.key === 'z'){
                 store.undo();

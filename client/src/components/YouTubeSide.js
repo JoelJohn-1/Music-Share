@@ -10,7 +10,7 @@ import List from '@mui/material/List';
 import YouTube from 'react-youtube';
 import { Typography } from "@mui/material";
 import Comment from './Comment'
-import Stop from "@mui/icons-material/Stop";
+import AuthContext from '../auth'
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -21,6 +21,7 @@ const YouTubeSide = () => {
     const [commentsVisible, setCommentsVisible] = useState(false);
     const [commentval, setCommentval] = useState("");
     const [players, setPlayer] = useState();
+    const { auth } = useContext(AuthContext);
 
     function decSong() {
       currentSong--;
@@ -69,6 +70,14 @@ const YouTubeSide = () => {
         },
       };  
 
+    let commentPossible = false;
+    if (store) {
+      if (store.currentList && store.currentList.published) {
+        commentPossible = true;
+      }
+    }
+    let commentButtonVisible = (auth.loggedIn && commentsVisible && commentPossible) ? 'visible' : 'hidden';
+
     let commentVisibility = (commentsVisible) ? 'visible' : 'hidden';
     let comments = "";
     if (store && store.currentList) {
@@ -84,7 +93,7 @@ const YouTubeSide = () => {
                     />
                 ))
       }
-      
+    
     </List>
     <TextField
     value={commentval}
@@ -93,7 +102,7 @@ const YouTubeSide = () => {
     name="name"
     inputProps={{style: {height: 30, fontSize: 30, width: '900px'}}}
     autoFocus
-    style={{ position: 'absolute', bottom: '0px', visibility: commentVisibility, marginLeft: '10px', backgroundColor: 'white', borderRadius:'16px'}}
+    style={{ position: 'absolute', bottom: '0px', visibility: commentButtonVisible, marginLeft: '10px', backgroundColor: 'white', borderRadius:'16px'}}
     onChange={updateText}
     onKeyPress={submitComment}
 />
@@ -145,7 +154,6 @@ const YouTubeSide = () => {
 
   function onPlayerStateChange(event) {
     let playerStatus = event.data;
-    console.log(playerStatus)
     let player = event.target;
     setPlayer(player);
     if (playerStatus === -1) {
