@@ -439,7 +439,9 @@ function GlobalStoreContextProvider(props) {
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
-    store.loadIdNamePairs = function () {
+    store.loadIdNamePairs = function (search_term) {
+        if (search_term)
+            store.search_term = search_term
         if (store.search_screen === 0 && auth.loggedIn) {
             async function asyncLoadIdNamePairs() {
                 const response = await api.getPlaylistsInfo();
@@ -908,7 +910,7 @@ function GlobalStoreContextProvider(props) {
     store.sendComment = function(comment) {
         console.log(store.currentList);
         let newComment = {
-            comment_author: store.currentList.ownerName,
+            comment_author: (auth.user.firstName + " " + auth.user.lastName),
             content: comment
         }
         store.currentList.comments.push(newComment)
@@ -971,7 +973,6 @@ function GlobalStoreContextProvider(props) {
         };
         let transaction = new CreateSong_Transaction(store, index, song, id);
         tps.addTransaction(transaction);
-        console.log(tps)
     }    
     store.addMoveSongTransaction = function (start, end) {
         let transaction = new MoveSong_Transaction(store, start, end);

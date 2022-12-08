@@ -29,6 +29,7 @@ import YouTubeSide from './YouTubeSide';
 const WorkScreen = () => {
   const { store } = useContext(GlobalStoreContext);
   const { auth } = useContext(AuthContext);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
       store.loadIdNamePairs();
@@ -42,6 +43,7 @@ const WorkScreen = () => {
     store.loadIdNamePairs();
     event.stopPropagation();
     store.closeCurrentList();
+    setSearchTerm("");
 
 
   }
@@ -51,6 +53,7 @@ const WorkScreen = () => {
     store.setSearchTerm('');
     store.loadIdNamePairs();
     store.closeCurrentList();
+    setSearchTerm("");
 
 
   }
@@ -59,6 +62,7 @@ const WorkScreen = () => {
     store.loadIdNamePairs();
     event.stopPropagation();
     store.closeCurrentList();
+    setSearchTerm("");
 
 
   }
@@ -66,11 +70,11 @@ const WorkScreen = () => {
     store.createNewList();
   }
   const loadSearchTerm = (event) => {
-    store.setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value);
   }
   const handleSearch = (event) => {
     if (event.charCode == 13) {
-      store.loadIdNamePairs();
+      store.loadIdNamePairs(searchTerm);
     }
     event.stopPropagation();
 
@@ -140,7 +144,7 @@ const WorkScreen = () => {
           <IconButton onClick={handleUniIconButton} > <PersonIcon  fontSize="large"style ={{color: 'black'}}/></IconButton>
           <IconButton onClick={handleMultiIconButton} ><PeopleIcon id="people-icon" fontSize="large" style ={{color: 'black'}}/></IconButton>
 
-          <TextField onKeyPress={handleSearch} onChange={loadSearchTerm} id="the-search-bar" label="Search..." variant="filled"  style={{ visibility: searchscreen ,position: 'absolute', right: '47%'}}> </TextField>
+          <TextField value={searchTerm} onKeyPress={handleSearch} onChange={loadSearchTerm} id="the-search-bar" label="Search..." variant="filled"  style={{ visibility: searchscreen ,position: 'absolute', right: '47%'}}> </TextField>
             <SortMenu></SortMenu>
           </div>
         </Box>

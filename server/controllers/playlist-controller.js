@@ -82,11 +82,7 @@ deletePlaylist = async (req, res) => {
     })
 }
 getPlaylistById = async (req, res) => {
-    if(auth.verifyUser(req) === null){
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
+    
 
     await Playlist.findById({ _id: req.params.id }, (err, list) => {
         if (err) {
@@ -176,11 +172,7 @@ getPlaylistByTitle = async (req, res) => {
     
 }
 getPlaylistPairs = async (req, res) => {
-    if(auth.verifyUser(req) === null){
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
+    
     await User.findOne({ _id: req.userId }, (err, user) => {
         async function asyncFindList(email) {
             await Playlist.find({ ownerEmail: email }, (err, playlists) => {
@@ -221,11 +213,6 @@ getPlaylistPairs = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getPlaylists = async (req, res) => {
-    if(auth.verifyUser(req) === null){
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
     await Playlist.find({}, (err, playlists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
@@ -239,11 +226,6 @@ getPlaylists = async (req, res) => {
     }).catch(err => console.log(err))
 }
 updatePlaylist = async (req, res) => {
-    if(auth.verifyUser(req) === null){
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
     const body = req.body
 
     if (!body) {

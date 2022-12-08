@@ -21,16 +21,25 @@ const YouTubeSide = () => {
     const [commentsVisible, setCommentsVisible] = useState(false);
     const [commentval, setCommentval] = useState("");
     const [players, setPlayer] = useState();
+    
+
     const { auth } = useContext(AuthContext);
 
     function decSong() {
       currentSong--;
       if (currentSong < 0)
         currentSong = list.length - 1;
+        let element = document.getElementById('youtube-artist');
+        element.innerHTML = "Artist: " + store.currentList.songs[currentSong].artist;
+        element = document.getElementById('youtube-title');
+        element.innerHTML = "Title: " + store.currentList.songs[currentSong].title;
+        element = document.getElementById('youtube-number');
+        element.innerHTML = "Song #: " + currentSong;
     }
     function incSong() {
       currentSong++;
       currentSong = currentSong % list.length;
+      
     }
 
     const updateText = (event) => {
@@ -48,6 +57,8 @@ const YouTubeSide = () => {
     }
 
     const handleStopVideo = (event) => {
+      
+      
       players.pauseVideo();
     }
     const handlePlayVideo = (event) => {
@@ -55,10 +66,23 @@ const YouTubeSide = () => {
     }
     const handleSkipVideo = (event) => {
       incSong();
+      let element = document.getElementById('youtube-artist');
+      element.innerHTML = "Artist: " + store.currentList.songs[currentSong].artist;
+      element = document.getElementById('youtube-title');
+      element.innerHTML = "Title: " + store.currentList.songs[currentSong].title;
+      element = document.getElementById('youtube-number');
+      element.innerHTML = "Song #: " + currentSong;
       loadAndPlayCurrentSong(players);
+      // if (store.currentList && store.currentList.songs.length > 0) {
+      //   setNumVal(currentSong);
+      // }
     }
     const handlePrevVideo = (event) => {
       decSong();
+      let element = document.getElementById('youtube-artist');
+      element.innerHTML = "Artist: " + store.currentList.songs[currentSong].artist;
+      element = document.getElementById('youtube-title');
+      element.innerHTML = "Title: " + store.currentList.songs[currentSong].title;
       loadAndPlayCurrentSong(players);
     }
     const playerOptions = {
@@ -196,9 +220,9 @@ const YouTubeSide = () => {
             />
             <Typography style={{position: 'absolute', left: '40%', fontSize:'30px', visibility: listExists}} > Now Playing</Typography>
             <Typography style={{position: 'absolute',  bottom: '-18%', fontSize: '25px', visibility: listExists}} >Playlist: {title}</Typography>
-            <Typography style={{position: 'absolute',  bottom: '-24%', fontSize: '25px',visibility: listExists}} >Song #: {currentSong}</Typography>
-            <Typography style={{position: 'absolute', bottom: '-30%', fontSize: '25px',visibility: listExists}} >Title: {songTitle}</Typography>
-            <Typography style={{position: 'absolute',  bottom: '-36%', fontSize: '25px', visibility: listExists}} >Artist: {artist}</Typography>
+            <Typography id='youtube-number'style={{position: 'absolute',  bottom: '-24%', fontSize: '25px',visibility: listExists}} >Song #: {currentSong}</Typography>
+            <Typography id='youtube-title'style={{position: 'absolute', bottom: '-30%', fontSize: '25px',visibility: listExists}} >Title: {songTitle}</Typography>
+            <Typography id='youtube-artist'style={{position: 'absolute',  bottom: '-36%', fontSize: '25px', visibility: listExists}} >Artist: {artist}</Typography>
     
             <Box style={{position: 'absolute', left: '35%', bottom: '-50%', visibility: listExists}}>
               <SkipPreviousIcon onClick={handlePrevVideo} style={{fontSize: '70px'}}></SkipPreviousIcon>

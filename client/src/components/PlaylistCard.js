@@ -19,7 +19,7 @@ const PlaylistCard = (props) => {
     const [editName, setEditName] = useState("");
 
     let homescreen='hidden';
-    if (store.search_screen === 0)
+    if (store.search_screen === 0 && auth.loggedIn)
         homescreen = 'visible'; 
 
     let logged = (auth.loggedIn) ? 'hidden' : 'visible'
@@ -45,6 +45,10 @@ const PlaylistCard = (props) => {
 
     }
 
+    let duplicateVis = "hidden";
+    if (auth.loggedIn) {
+        duplicateVis = 'visible';
+    }
     
     
     const expand_list = (event) => {
@@ -275,7 +279,7 @@ const PlaylistCard = (props) => {
             <Button onClick={handleRedo} variant="Contained" style={{ visibility: redoPossible, fontSize:'11px', backgroundColor: 'lightGray', color: 'black', marginRight:'52%'}}>redo</Button>
             <Button onClick={handlePublish} variant="Contained" style={{ visibility: unpublished, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Publish</Button>
             <Button onClick={handleDelete} variant="Contained" style={{ visibility: homescreen, marginRight:'1%', fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Delete</Button>
-            <Button onClick={handleDuplicate} variant="Contained" style={{fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
+            <Button onClick={handleDuplicate} variant="Contained" style={{ visibility: duplicateVis, fontSize:'11px', backgroundColor: 'lightGray', color: 'black'}}>Duplicate</Button>
 
             </Box>
         </Box>

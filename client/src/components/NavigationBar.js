@@ -28,12 +28,15 @@ const NavigationBar = () => {
   const handleContinueAsGuest = () => {
     handleMenuClose();
     auth.loginAsGuest();
+    store.closeCurrentList();
   };
 
   
   const handleCloseGuest = () => {
     handleMenuClose();
     auth.exitGuest();
+    store.closeCurrentList();
+
   }
 
   const handleProfileMenuOpen = (event) => {
@@ -44,6 +47,8 @@ const NavigationBar = () => {
   const handleLogout = () => {
     handleMenuClose();
     auth.logoutUser();
+    store.closeCurrentList();
+
   };
 
   const loggedOutMenu = (
