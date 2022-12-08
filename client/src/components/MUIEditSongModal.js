@@ -9,7 +9,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 800,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -60,33 +60,33 @@ export default function MUIEditSongModal() {
             data-animation="slideInOutLeft">
             <div
                 id='edit-song-root'
-                className="modal-root">
+                style={{background: "#383434", height: 250, width: 250}}>
                 <div
                     id="edit-song-modal-header"
-                    className="modal-north">Edit Song</div>
+                    style={{fontSize: '30px', position: 'relative', left: '25%'}}>Edit Song</div>
                 <div
                     id="edit-song-modal-content"
                     className="modal-center">
-                    <div id="title-prompt" className="modal-prompt">Title:</div>
+                    <div id="title-prompt" style={{fontSize: '30px', position: 'relative', left: '0%'}}>Title:</div>
                     <input 
                         id="edit-song-modal-title-textfield" 
-                        className='modal-textfield' 
+                        style={{ position: 'absolute', left: '47%', top: '41.5%'}}
                         type="text" 
                         defaultValue={title} 
                         onChange={handleUpdateTitle} 
                         />
-                    <div id="artist-prompt" className="modal-prompt">Artist:</div>
+                    <div id="artist-prompt" style={{fontSize: '30px', position: 'relative', left: '0%'}}>Artist:</div>
                     <input 
                         id="edit-song-modal-artist-textfield" 
-                        className='modal-textfield' 
+                        style={{ position: 'absolute', left: '47.5%', top: '45.1%'}}
                         type="text" 
                         defaultValue={artist} 
                         onChange={handleUpdateArtist} 
                         />
-                    <div id="you-tube-id-prompt" className="modal-prompt">You Tube Id:</div>
+                    <div id="you-tube-id-prompt" style={{fontSize: '30px', position: 'relative', left: '0%'}}>Youtube Id:</div>
                     <input 
                         id="edit-song-modal-youTubeId-textfield" 
-                        className='modal-textfield' 
+                        style={{ position: 'absolute', left: '51%', top: '49%', width: '90px'}}
                         type="text" 
                         defaultValue={youTubeId} 
                         onChange={handleUpdateYouTubeId} 
@@ -96,14 +96,14 @@ export default function MUIEditSongModal() {
                     <input 
                         type="button" 
                         id="edit-song-confirm-button" 
-                        className="modal-button" 
+                        style={{fontSize: '20px', position: 'relative', marginTop: '50px', marginLeft: '20px', marginRight: '50px'}}
                         value='Confirm' 
                         onClick={handleConfirmEditSong} 
                         />
                     <input 
                         type="button" 
                         id="edit-song-cancel-button" 
-                        className="modal-button" 
+                        style={{fontSize: '20px', position: 'relative', left: '0%'}}
                         value='Cancel' 
                         onClick={handleCancelEditSong}
                          />

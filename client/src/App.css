@@ -371,18 +371,17 @@ input {
 }
 
 .modal-root {
-  position: relative;
-  max-width: 1200vw;
+  position: absolute;
+  max-width: 1800px;
   max-height: 600vh;
   overflow: visible;
   display: flex;
   flex-direction: column;
-  background: var(--swatch-complement);
+  background: #383434;
   cursor: default;
   border-width: 2px;
   border-color: black;
   border-style: solid;
-  box-shadow: 5px 10px #888888;
 }
 
 .modal-textfield {
